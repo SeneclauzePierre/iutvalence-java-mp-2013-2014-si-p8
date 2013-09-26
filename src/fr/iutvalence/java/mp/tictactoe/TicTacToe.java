@@ -3,7 +3,6 @@ package fr.iutvalence.java.mp.tictactoe;
 /**
  * TicTacToe
  * 
- * //TODO (FIXED) use @version tag
  * @version 0.0
  * 
  * 2013-09-20
@@ -12,7 +11,7 @@ package fr.iutvalence.java.mp.tictactoe;
  * 
  * @author seneclap
  *
- * //TODO (FIXED) misplaced comment (class comment should be placed before @author)
+ * //TODO (fix) misplaced comment (class comment should be placed before any other tag)
  */
 public class TicTacToe
 {
