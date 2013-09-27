@@ -16,4 +16,26 @@ package fr.iutvalence.java.mp.tictactoe;
 public class TicTacToe
 {
     
+    /**
+     * grid[Ordinate][Abscissa]
+     * Game's grid
+     */
+    private Square grid[][];
+    
+    /**
+     *  NewGame
+     *  This method generates a 16x16 grid 
+     *  and allows for a new game to start
+     */
+    public void NewGame()
+    {
+        int i, j; // Point respectively on an ordinate and an abscissa
+        for (i=1;i<17;i++)
+        {
+            for (j=1;j<17;j++)
+            {
+                this.grid[i][j] = new Square();
+            }
+        }
+    }
 }
