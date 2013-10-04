@@ -45,11 +45,11 @@ public class TicTacToe
     private int[][] grid;
     
     /**
-     *  NewGame
+     *  newGame
      *  This method generates a 16x16 grid 
      *  and allows for a new game to start
      */
-    public void NewGame()
+    public void newGame()
     {
         // TODO (FIXED) define hard-coded values as constants
         int i, j; // Point respectively on an ordinate and an abscissa
@@ -63,17 +63,37 @@ public class TicTacToe
     }
     
     /**
-     * GameTurn
+     * gameTurn
      * Puts the player's symbol in the square located in (x,y)
      * @param player The number of the player playing this turn
      * @param x Ordinate of the square in which the player places his symbol
      * @param y Abscissa of the square in which the player places his symbol
+     * @return A boolean stating if the symbol was succesfully place
      */
-    public void GameTurn(int player, int x, int y)
+    public boolean gameTurn(int player, int x, int y)
     {
-        if (this.grid[x][y] == TicTacToe.EMPTY);
+        //TODO (FIXED) Complete this method
+        if (this.grid[x][y] == TicTacToe.EMPTY)
         {
-            //TODO (fix) Complete this method
+            /* If the player chose an empty square...  */
+            this.grid[x][y] = player;
+            checkLine(player, x, y);
+            return true;
         }
+        else
+            return false;
     }
+    
+    /**
+     * checkLine
+     * Checks if one or more lines are completed
+     * @param player The number of the player who played this turn
+     * @param x Ordinate of the square in which the symbol has been placed
+     * @param y Abscissa of the square in which the symbol has been placed
+     */
+    public void checkLine(int player, int x, int y)
+    {
+      //TODO (fix) Complete this method
+    }
+    
 }
