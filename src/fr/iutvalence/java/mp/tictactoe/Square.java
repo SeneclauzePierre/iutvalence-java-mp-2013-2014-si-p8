@@ -104,4 +104,15 @@ public void newValue(int value)
  { 
     this.value = value;
  }
+
+/**
+ * checkValue
+ * Used to return the square's value
+ * @return : the square's value (duh!)
+ */
+public int checkValue()
+{
+    return this.value;
+}
+
 }
