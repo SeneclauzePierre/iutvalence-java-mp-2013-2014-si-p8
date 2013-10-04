@@ -14,15 +14,7 @@ package fr.iutvalence.java.mp.tictactoe;
  * //TODO (FIXED) misplaced comment (class comment should be placed before any other tag)
  */
 public class TicTacToe
-{
-    // TODO (fix) move field declarations after constants
-    /**
-     * grid[Ordinate][Abscissa]
-     * Game's grid
-     */
-    // TODO (fix) write declaration as int[][] grid
-    private int grid[][];
-    
+{    
     /**
      * EMPTY
      * This constant means there is no symbol in a square
@@ -38,6 +30,19 @@ public class TicTacToe
      * This constant means the square contains a circle
      */
     public final static int CIRCLE = 2;
+    /**
+     * SIZE
+     * This constant defines the size of an edge the grid 
+     * in terms of squares
+     */
+    public final static int SIZE = 16;
+    // TODO (FIXED) move field declarations after constants
+    /**
+     * grid[Ordinate][Abscissa]
+     * Game's grid
+     */
+    // TODO (FIXED) write declaration as int[][] grid
+    private int[][] grid;
     
     /**
      *  NewGame
@@ -46,11 +51,11 @@ public class TicTacToe
      */
     public void NewGame()
     {
-        // TODO (fix) define hard-coded values as constants
+        // TODO (FIXED) define hard-coded values as constants
         int i, j; // Point respectively on an ordinate and an abscissa
-        for (i=1;i<17;i++)
+        for (i=1;i<=TicTacToe.SIZE;i++)
         {
-            for (j=1;j<17;j++)
+            for (j=1;j<=TicTacToe.SIZE;j++)
             {
                 this.grid[i][j] = TicTacToe.EMPTY;
             }
