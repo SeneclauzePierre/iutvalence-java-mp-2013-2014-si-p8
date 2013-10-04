@@ -42,7 +42,7 @@ public class TicTacToe
      * Game's grid
      */
     // TODO (FIXED) write declaration as int[][] grid
-    private int[][] grid;
+    private Square[][] grid;
     
     /**
      *  newGame
@@ -57,7 +57,7 @@ public class TicTacToe
         {
             for (j=1;j<=TicTacToe.SIZE;j++)
             {
-                this.grid[i][j] = TicTacToe.EMPTY;
+                this.grid[i][j] = new Square();
             }
         }
     }
@@ -73,10 +73,10 @@ public class TicTacToe
     public boolean gameTurn(int player, int x, int y)
     {
         //TODO (FIXED) Complete this method
-        if (this.grid[x][y] == TicTacToe.EMPTY)
+        if (this.grid[x][y].isEmpty())
         {
             /* If the player chose an empty square...  */
-            this.grid[x][y] = player;
+            this.grid[x][y].newValue(player);
             checkLine(player, x, y);
             return true;
         }
