@@ -15,11 +15,12 @@ package fr.iutvalence.java.mp.tictactoe;
  */
 public class TicTacToe
 {
-    
+    // TODO (fix) move field declarations after constants
     /**
      * grid[Ordinate][Abscissa]
      * Game's grid
      */
+    // TODO (fix) write declaration as int[][] grid
     private int grid[][];
     
     /**
@@ -45,6 +46,7 @@ public class TicTacToe
      */
     public void NewGame()
     {
+        // TODO (fix) define hard-coded values as constants
         int i, j; // Point respectively on an ordinate and an abscissa
         for (i=1;i<17;i++)
         {
