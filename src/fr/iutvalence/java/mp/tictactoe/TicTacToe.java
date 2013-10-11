@@ -11,7 +11,6 @@ package fr.iutvalence.java.mp.tictactoe;
  * 
  * @author seneclap
  *
- * //TODO (FIXED) misplaced comment (class comment should be placed before any other tag)
  */
 public class TicTacToe
 {    
@@ -34,6 +33,32 @@ public class TicTacToe
      * SIZE
      * This constant defines the size of an edge the grid 
      * in terms of squares
+     */
+    
+    /**
+     * UP_DOWN
+     * This constant represents the direction Up to Down
+     */
+    public final static int UP_DOWN = 0;
+    /**
+     * LEFT_RIGHT
+     * This constant represents the direction Left to Right
+     */
+    public final static int LEFT_RIGHT = 1;
+    /**
+     * UPLEFT_DOWNRIGHT
+     * This constant represents the direction UpLeft to DownRight
+     */
+    public final static int UPLEFT_DOWNRIGHT = 2;
+    /**
+     * UPRIGHT_DOWNLEFT
+     * This constant represents the direction UpRight to DownLeft
+     */
+    public final static int UPRIGHT_DOWNLEFT = 3;
+    
+    /**
+     * SIZE
+     * The size max of the grid
      */
     public final static int SIZE = 16;
     // TODO (FIXED) move field declarations after constants
@@ -77,7 +102,7 @@ public class TicTacToe
         {
             /* If the player chose an empty square...  */
             this.grid[x][y].newValue(player);
-            checkLine(player, x, y);
+            this.checkLine(player, x, y);
             return true;
         }
         else
@@ -93,7 +118,94 @@ public class TicTacToe
      */
     public void checkLine(int player, int x, int y)
     {
-      //TODO (fix) Complete this method
+      int n, m;
+      n = 1; m = 1;
+          // Check UP_DOWN --------
+      while ((y-n)>= 0 && this.grid[x][y-n].checkValue() == this.grid[x][y].checkValue()
+              && n<5 && !this.grid[x][y-n].seeLine(UP_DOWN))
+      {
+          n++;
+      }
+      while ((y+m)<= TicTacToe.SIZE && this.grid[x][y+m].checkValue() == this.grid[x][y].checkValue()
+              && n<5 && !this.grid[x][y+m].seeLine(UP_DOWN))
+      {
+          n++; m++;
+      }
+      m--;
+      if (n == 5)
+      {
+          //TODO (fix) Add an attribute score and add one point here
+          for (n=4;n>=0;n--)
+          {
+              this.grid[x][y+m-n].seeLine(UP_DOWN);
+          }
+      }
+      
+      n = 1; m = 1;
+          // Check LEFT_RIGHT --------
+      while ((x-n)>= 0 && this.grid[x-n][y].checkValue() == this.grid[x][y].checkValue()
+              && n<5 && !this.grid[x-n][y].seeLine(LEFT_RIGHT))
+      {
+          n++;
+      }
+      while ((x+m)<= TicTacToe.SIZE && this.grid[x+m][y].checkValue() == this.grid[x][y].checkValue()
+              && n<5 && !this.grid[x+m][y].seeLine(LEFT_RIGHT))
+      {
+          n++; m++;
+      }
+      m--;
+      if (n == 5)
+      {
+          //TODO (fix) Add an attribute score and add one point here
+          for (n=4;n>=0;n--)
+          {
+              this.grid[x+m-n][y].useLine(LEFT_RIGHT);
+          }
+      }
+      
+      n = 1; m = 1;
+          // Check UPLEFT_DOWNRIGHT -------
+      while ((y-n)>= 0 && (x-n)>= 0 && this.grid[x-n][y-n].checkValue() == this.grid[x][y].checkValue()
+              && n<5 && !this.grid[x-n][y-n].seeLine(UPLEFT_DOWNRIGHT))
+      {
+          n++;
+      }
+      while ((y+m)<= TicTacToe.SIZE && (x+m)<= TicTacToe.SIZE && this.grid[x+m][y+m].checkValue() == this.grid[x][y].checkValue()
+              && n<5 && !this.grid[x+m][y+m].seeLine(UPLEFT_DOWNRIGHT))
+      {
+          n++; m++;
+      }
+      m--;
+      if (n == 5)
+      {
+          //TODO (fix) Add an attribute score and add one point here
+          for (n=4;n>=0;n--)
+          {
+              this.grid[x+m-n][y+m-n].useLine(UPLEFT_DOWNRIGHT);
+          }
+      }
+      
+      n = 1; m = 1;
+          // Check UPRIGHT_DOWNLEFT -------
+      while ((y-n)>= 0 && (x+m)<= TicTacToe.SIZE && this.grid[x+n][y-n].checkValue() == this.grid[x][y].checkValue()
+              && n<5 && !this.grid[x+n][y-n].seeLine(UPRIGHT_DOWNLEFT))
+      {
+          n++;
+      }
+      while ((y+m)<= TicTacToe.SIZE && (x-m)>= 0 && this.grid[x-m][y+m].checkValue() == this.grid[x][y].checkValue()
+              && n<5 && !this.grid[x-m][y+m].seeLine(UPRIGHT_DOWNLEFT))
+      {
+          n++; m++;
+      }
+      m--;
+      if (n == 5)
+      {
+          //TODO (fix) Add an attribute score and add one point here
+          for (n=4;n>=0;n--)
+          {
+              this.grid[x-m+n][y+m-n].useLine(UPRIGHT_DOWNLEFT);
+          }
+      }
     }
     
 }

@@ -115,4 +115,25 @@ public int checkValue()
     return this.value;
 }
 
+/**
+ * seeLine
+ * Check if a square is used in a direction
+ * @param dir : direction who is check
+ * @return true if the square is used in the direction dir, else is not
+ */
+public boolean seeLine(int dir)
+{
+    return this.direction[dir];
+}
+
+/**
+ * useLine
+ * "use" the direction dir on the square
+ * @param dir
+ */
+public void useLine (int dir)
+{
+    this.direction[dir] = true;
+}
+
 }
