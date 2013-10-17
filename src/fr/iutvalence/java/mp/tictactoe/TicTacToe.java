@@ -1,7 +1,5 @@
 package fr.iutvalence.java.mp.tictactoe;
 
-import java.io.*; 
-
 /**
  * TicTacToe
  * 
@@ -79,10 +77,11 @@ public class TicTacToe
     // TODO (FIXED) declare constructors as constructors
     public TicTacToe()
     {
+        this.grid = new Square[16][16];
         int i, j; // Point respectively on an ordinate and an abscissa
-        for (i=1;i<=TicTacToe.SIZE;i++)
+        for (i=0;i<TicTacToe.SIZE;i++)
         {
-            for (j=1;j<=TicTacToe.SIZE;j++)
+            for (j=0;j<TicTacToe.SIZE;j++)
             {
                 this.grid[i][j] = new Square();
             }
@@ -107,10 +106,10 @@ public class TicTacToe
             {
                 while (verif == false)
                 {
-                    int x = (int)(TicTacToe.SIZE*Math.random())+1;
-                    int y = (int)(TicTacToe.SIZE*Math.random())+1;
+                    int x = (int)(TicTacToe.SIZE*Math.random());
+                    int y = (int)(TicTacToe.SIZE*Math.random());
                     verif = this.gameTurn(i, x, y);
-                    System.out.println("Joueur "+i+"%d a posé sa marque en ["+x+","+y+"]");
+                    System.out.println("Joueur "+i+" a posé sa marque en ["+x+","+y+"]");
                     if (verif == false)
                     {
                         System.out.println("...mais est un gros boulet !");
@@ -118,6 +117,7 @@ public class TicTacToe
                 }
                 verif = false;
             }
+            
         }
     }
 
@@ -159,7 +159,7 @@ public class TicTacToe
       {
           n++;
       }
-      while ((y+m)<= TicTacToe.SIZE && this.grid[x][y+m].checkValue() == this.grid[x][y].checkValue()
+      while ((y+m)< TicTacToe.SIZE && this.grid[x][y+m].checkValue() == this.grid[x][y].checkValue()
               && n<5 && !this.grid[x][y+m].seeLine(UP_DOWN))
       {
           n++; m++;
@@ -181,7 +181,7 @@ public class TicTacToe
       {
           n++;
       }
-      while ((x+m)<= TicTacToe.SIZE && this.grid[x+m][y].checkValue() == this.grid[x][y].checkValue()
+      while ((x+m)< TicTacToe.SIZE && this.grid[x+m][y].checkValue() == this.grid[x][y].checkValue()
               && n<5 && !this.grid[x+m][y].seeLine(LEFT_RIGHT))
       {
           n++; m++;
@@ -203,7 +203,7 @@ public class TicTacToe
       {
           n++;
       }
-      while ((y+m)<= TicTacToe.SIZE && (x+m)<= TicTacToe.SIZE && this.grid[x+m][y+m].checkValue() == this.grid[x][y].checkValue()
+      while ((y+m)< TicTacToe.SIZE && (x+m)< TicTacToe.SIZE && this.grid[x+m][y+m].checkValue() == this.grid[x][y].checkValue()
               && n<5 && !this.grid[x+m][y+m].seeLine(UPLEFT_DOWNRIGHT))
       {
           n++; m++;
@@ -220,12 +220,12 @@ public class TicTacToe
       
       n = 1; m = 1;
           // Check UPRIGHT_DOWNLEFT -------
-      while ((y-n)>= 0 && (x+m)<= TicTacToe.SIZE && this.grid[x+n][y-n].checkValue() == this.grid[x][y].checkValue()
+      while ((y-n)>= 0 && (x+n)< TicTacToe.SIZE && this.grid[x+n][y-n].checkValue() == this.grid[x][y].checkValue()
               && n<5 && !this.grid[x+n][y-n].seeLine(UPRIGHT_DOWNLEFT))
       {
           n++;
       }
-      while ((y+m)<= TicTacToe.SIZE && (x-m)>= 0 && this.grid[x-m][y+m].checkValue() == this.grid[x][y].checkValue()
+      while ((y+m)< TicTacToe.SIZE && (x-m)>= 0 && this.grid[x-m][y+m].checkValue() == this.grid[x][y].checkValue()
               && n<5 && !this.grid[x-m][y+m].seeLine(UPRIGHT_DOWNLEFT))
       {
           n++; m++;

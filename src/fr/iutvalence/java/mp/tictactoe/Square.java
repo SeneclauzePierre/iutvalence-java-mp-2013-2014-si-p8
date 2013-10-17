@@ -79,6 +79,7 @@ public class Square
  */
 public Square()
 {
+    this.direction = new boolean[4];
     this.value = Square.EMPTY;
     this.direction[Square.UP_DOWN] = false;
     this.direction[Square.LEFT_RIGHT] = false;
