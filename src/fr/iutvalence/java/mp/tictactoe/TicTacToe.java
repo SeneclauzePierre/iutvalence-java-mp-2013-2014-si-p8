@@ -69,12 +69,13 @@ public class TicTacToe
     private Square[][] grid;
     
     /**
-     *  newGame
+     *  TicTacToe
+     *  Constructor
      *  This method generates a 16x16 grid 
      *  and allows for a new game to start
      */
-    // TODO (fix) declare constructors as constructors
-    public void newGame()
+    // TODO (FIXED) declare constructors as constructors
+    public TicTacToe()
     {
         int i, j; // Point respectively on an ordinate and an abscissa
         for (i=1;i<=TicTacToe.SIZE;i++)
@@ -88,6 +89,33 @@ public class TicTacToe
     
     // TODO (fix) this class should only have one public metho called "play" that plays the entire
     // game when called (not a single turn)
+    
+    /**
+     * play
+     * Handles the whole game from beggining to end,
+     * according to the rules.
+     * Makes the players play one after another.
+     */
+    public void play()
+    {
+        int x, y;
+        int i;
+        boolean verif = false;
+        while (true) /*Victory or end of game conditions (to be modified)*/
+        {
+            for (i=1;i<=2;i++)
+            {
+                while (verif == false)
+                {
+                    x = (int)(TicTacToe.SIZE*Math.random())+1;
+                    y = (int)(TicTacToe.SIZE*Math.random())+1;
+                    verif = this.gameTurn(i, x, y);
+                }
+                verif = false;
+            }
+        }
+    }
+
     /**
      * gameTurn
      * Puts the player's symbol in the square located in (x,y)
@@ -96,7 +124,7 @@ public class TicTacToe
      * @param y Abscissa of the square in which the player places his symbol
      * @return A boolean stating if the symbol was succesfully place
      */
-    public boolean gameTurn(int player, int x, int y)
+    private boolean gameTurn(int player, int x, int y)
     {
         if (this.grid[x][y].isEmpty())
         {
@@ -116,7 +144,7 @@ public class TicTacToe
      * @param x Ordinate of the square in which the symbol has been placed
      * @param y Abscissa of the square in which the symbol has been placed
      */
-    public void checkLine(int player, int x, int y)
+    private void checkLine(int player, int x, int y)
     {
       int n, m;
       n = 1; m = 1;

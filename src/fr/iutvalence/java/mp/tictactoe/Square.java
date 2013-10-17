@@ -1,11 +1,14 @@
 package fr.iutvalence.java.mp.tictactoe;
 
-// TODO (explain) i am not really sure of understanding the exact purpose of this class
+// TODO (EXPLAINED) i am not really sure of understanding the exact purpose of this class
 /**
  * Square
  * 
  * This class represents one square, 
- * which is part of the grid defined in the TicTacToe class
+ * which is part of the grid defined in the TicTacToe class.
+ * It is mostly used to check if a square has already been used 
+ * to complete a line in one or several directions,
+ * so that several lines don't overlap themselves.
  * 
  * @author seneclap
  *
@@ -118,9 +121,9 @@ public int checkValue()
 
 /**
  * seeLine
- * Check if a square is used in a direction
- * @param dir : direction who is check
- * @return true if the square is used in the direction dir, else is not
+ * Checks if a square is used in the "dir" direction
+ * @param dir : The checked direction
+ * @return true if the square is used in the direction dir, else it returns false
  */
 public boolean seeLine(int dir)
 {
@@ -129,8 +132,8 @@ public boolean seeLine(int dir)
 
 /**
  * useLine
- * "use" the direction dir on the square
- * @param dir
+ * States that a square is used to complete a line in the "dir" direction
+ * @param dir Indicates the direction in which the line has been completed
  */
 public void useLine (int dir)
 {
