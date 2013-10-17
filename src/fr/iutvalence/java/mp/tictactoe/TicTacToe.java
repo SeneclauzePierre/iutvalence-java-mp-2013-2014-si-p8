@@ -1,5 +1,7 @@
 package fr.iutvalence.java.mp.tictactoe;
 
+import java.io.*; 
+
 /**
  * TicTacToe
  * 
@@ -87,7 +89,7 @@ public class TicTacToe
         }
     }
     
-    // TODO (fix) this class should only have one public metho called "play" that plays the entire
+    // TODO (FIXED) this class should only have one public metho called "play" that plays the entire
     // game when called (not a single turn)
     
     /**
@@ -98,18 +100,21 @@ public class TicTacToe
      */
     public void play()
     {
-        int x, y;
-        int i;
         boolean verif = false;
         while (true) /*Victory or end of game conditions (to be modified)*/
         {
-            for (i=1;i<=2;i++)
+            for (int i=1;i<=2;i++)
             {
                 while (verif == false)
                 {
-                    x = (int)(TicTacToe.SIZE*Math.random())+1;
-                    y = (int)(TicTacToe.SIZE*Math.random())+1;
+                    int x = (int)(TicTacToe.SIZE*Math.random())+1;
+                    int y = (int)(TicTacToe.SIZE*Math.random())+1;
                     verif = this.gameTurn(i, x, y);
+                    System.out.println("Joueur "+i+"%d a posé sa marque en ["+x+","+y+"]");
+                    if (verif == false)
+                    {
+                        System.out.println("...mais est un gros boulet !");
+                    }
                 }
                 verif = false;
             }
