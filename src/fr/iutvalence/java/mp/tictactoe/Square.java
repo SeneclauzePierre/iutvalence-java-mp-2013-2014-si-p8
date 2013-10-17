@@ -1,5 +1,6 @@
 package fr.iutvalence.java.mp.tictactoe;
 
+// TODO (explain) i am not really sure of understanding the exact purpose of this class
 /**
  * Square
  * 

@@ -61,12 +61,11 @@ public class TicTacToe
      * The size max of the grid
      */
     public final static int SIZE = 16;
-    // TODO (FIXED) move field declarations after constants
+
     /**
      * grid[Ordinate][Abscissa]
      * Game's grid
      */
-    // TODO (FIXED) write declaration as int[][] grid
     private Square[][] grid;
     
     /**
@@ -74,9 +73,9 @@ public class TicTacToe
      *  This method generates a 16x16 grid 
      *  and allows for a new game to start
      */
+    // TODO (fix) declare constructors as constructors
     public void newGame()
     {
-        // TODO (FIXED) define hard-coded values as constants
         int i, j; // Point respectively on an ordinate and an abscissa
         for (i=1;i<=TicTacToe.SIZE;i++)
         {
@@ -87,6 +86,8 @@ public class TicTacToe
         }
     }
     
+    // TODO (fix) this class should only have one public metho called "play" that plays the entire
+    // game when called (not a single turn)
     /**
      * gameTurn
      * Puts the player's symbol in the square located in (x,y)
@@ -97,7 +98,6 @@ public class TicTacToe
      */
     public boolean gameTurn(int player, int x, int y)
     {
-        //TODO (FIXED) Complete this method
         if (this.grid[x][y].isEmpty())
         {
             /* If the player chose an empty square...  */
