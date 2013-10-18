@@ -18,14 +18,6 @@ public class Square
      * EMPTY This constant means there is no symbol in a square
      */
     public final static int EMPTY = 0;
-    /**
-     * CROSS This constant means the square contains a cross
-     */
-    public final static int CROSS = 1;
-    /**
-     * CIRCLE This constant means the square contains a circle
-     */
-    public final static int CIRCLE = 2;
 
     /**
      * UP_DOWN This constant represents the direction Up to Down

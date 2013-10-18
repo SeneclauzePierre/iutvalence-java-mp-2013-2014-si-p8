@@ -14,59 +14,45 @@ package fr.iutvalence.java.mp.tictactoe;
  */
 public class TicTacToe
 {
-    // TODO (fix) these constants are already defined in Square
+    // TODO (FIXED) these constants are already defined in Square
+    
+    // TODO (FIXED) detail comment
     /**
-     * EMPTY This constant means there is no symbol in a square
-     */
-    public final static int EMPTY = 0;
-    /**
-     * CROSS This constant means the square contains a cross
-     */
-    public final static int CROSS = 1;
-    /**
-     * CIRCLE This constant means the square contains a circle
-     */
-    public final static int CIRCLE = 2;
-    /**
-     * SIZE This constant defines the size of an edge the grid in terms of
-     * squares
-     */
-
-    /**
-     * UP_DOWN This constant represents the direction Up to Down
-     */
-    public final static int UP_DOWN = 0;
-    /**
-     * LEFT_RIGHT This constant represents the direction Left to Right
-     */
-    public final static int LEFT_RIGHT = 1;
-    /**
-     * UPLEFT_DOWNRIGHT This constant represents the direction UpLeft to
-     * DownRight
-     */
-    public final static int UPLEFT_DOWNRIGHT = 2;
-    /**
-     * UPRIGHT_DOWNLEFT This constant represents the direction UpRight to
-     * DownLeft
-     */
-    public final static int UPRIGHT_DOWNLEFT = 3;
-
-    // TODO (fix) detail comment
-    /**
-     * SIZE The size max of the grid
+     * SIZE The maximum size of the grid
+     * A maximum of SIZE symbols can be placed on a grid's line or column
+     * After that, the grid's line/column is full
      */
     public final static int SIZE = 16;
 
-    // TODO (fix) detail comment
+    // TODO (FIXED) detail comment
     /**
-     * SIZE_LINE The size max of a line
+     * SIZE_LINE The number of symbols that need to be lined up to score
+     * When SIZE_LINE symbols are lined up, the player playing these symbols scores
      */
-    public final static int SIZE_LINE = 16;
+    public final static int SIZE_LINE = 5;
+    
+    /**
+     * MAX_TURN
+     * The number of turns played before the end of the game
+     */
+    public final static int MAX_TURN = 100;
+    
+    /**
+     * N_PLAYERS
+     * The number of players (these comments are getting more and more obvious, aren't they ?)
+     */
+    public final static int N_PLAYERS = 2;
 
     /**
      * grid[Ordinate][Abscissa] Game's grid
      */
     private Square[][] grid;
+    
+    /**
+     * score[ID's player] Keeps track of each player's score
+     */
+    private int[] score;
+    
 
     /**
      * TicTacToe Constructor This method generates a 16x16 grid and allows for a
@@ -74,39 +60,45 @@ public class TicTacToe
      */
     public TicTacToe()
     {
-        this.grid = new Square[16][16];
+        this.grid = new Square[SIZE][SIZE];
         int i, j; // Point respectively on an ordinate and an abscissa
-        for (i = 0; i < TicTacToe.SIZE; i++)
+        for (i = 0; i < SIZE; i++)
         {
-            for (j = 0; j < TicTacToe.SIZE; j++)
+            for (j = 0; j < SIZE; j++)
             {
                 this.grid[i][j] = new Square();
             }
         }
+        this.score = new int[N_PLAYERS + 1];
+        int player;
+        for (player = 1; player <= N_PLAYERS; player++)
+        {
+            this.score[player] = 0; 
+        }
     }
     
     /**
-     * play Handles the whole game from beggining to end, according to the
+     * play Handles the whole game from beginning to end, according to the
      * rules. Makes the players play one after another.
      */
     public void play()
     {
         int t = 0;
         boolean verif = false;
-        // TODO (fix) declare hard-coded values as constants
+        // TODO (FIXED) declare hard-coded values as constants
         
-        while (t < 120) /* Victory or end of game conditions (to be modified) */
+        while (t < MAX_TURN) /* Victory or end of game conditions (to be modified) */
         {
-            for (int i = 1; i <= 2; i++)
+            for (int i = 1; i <= N_PLAYERS; i++)
             {
-                while (verif == false)
+                while (!verif)
                 {
-                    int x = (int) (TicTacToe.SIZE * Math.random());
-                    int y = (int) (TicTacToe.SIZE * Math.random());
+                    int x = (int) (SIZE * Math.random());
+                    int y = (int) (SIZE * Math.random());
                     verif = this.gameTurn(i, x, y);
                     System.out.println("Joueur " + i + " a posé sa marque en [" + x + "," + y + "] -- Tour : "
                             + (t + 1));
-                    if (verif == false)
+                    if (!verif)
                     {
                         System.out.println("...mais est un gros boulet !");
                     }
@@ -116,6 +108,9 @@ public class TicTacToe
             }
             t++;
         }
+        int i;
+        for (i = 1; i <= N_PLAYERS; i++)
+            System.out.println("Score Joueur " + i + " : "+ this.score[i]);
     }
 
     /**
@@ -159,24 +154,25 @@ public class TicTacToe
         m = 1;
         // Check UP_DOWN --------
         while ((y - n) >= 0 && this.grid[x][y - n].checkValue() == this.grid[x][y].checkValue()
-                && n < TicTacToe.SIZE_LINE && !this.grid[x][y - n].seeLine(UP_DOWN))
+                && n < SIZE_LINE && !this.grid[x][y - n].seeLine(Square.UP_DOWN))
         {
             n++;
         }
-        while ((y + m) < TicTacToe.SIZE && this.grid[x][y + m].checkValue() == this.grid[x][y].checkValue()
-                && n < TicTacToe.SIZE_LINE && !this.grid[x][y + m].seeLine(UP_DOWN))
+        while ((y + m) < SIZE && this.grid[x][y + m].checkValue() == this.grid[x][y].checkValue()
+                && n < SIZE_LINE && !this.grid[x][y + m].seeLine(Square.UP_DOWN))
         {
             n++;
             m++;
         }
         m--;
-        if (n == TicTacToe.SIZE_LINE)
+        if (n == SIZE_LINE)
         {
-            // TODO (fix) Add an attribute score and add one point here
+            // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en UP_DOWN");
-            for (n = TicTacToe.SIZE_LINE - 1; n >= 0; n--)
+            this.score[player]++;
+            for (n = SIZE_LINE - 1; n >= 0; n--)
             {
-                this.grid[x][y + m - n].seeLine(UP_DOWN);
+                this.grid[x][y + m - n].seeLine(Square.UP_DOWN);
             }
         }
 
@@ -184,24 +180,25 @@ public class TicTacToe
         m = 1;
         // Check LEFT_RIGHT --------
         while ((x - n) >= 0 && this.grid[x - n][y].checkValue() == this.grid[x][y].checkValue()
-                && n < TicTacToe.SIZE_LINE && !this.grid[x - n][y].seeLine(LEFT_RIGHT))
+                && n < SIZE_LINE && !this.grid[x - n][y].seeLine(Square.LEFT_RIGHT))
         {
             n++;
         }
-        while ((x + m) < TicTacToe.SIZE && this.grid[x + m][y].checkValue() == this.grid[x][y].checkValue()
-                && n < TicTacToe.SIZE_LINE && !this.grid[x + m][y].seeLine(LEFT_RIGHT))
+        while ((x + m) < SIZE && this.grid[x + m][y].checkValue() == this.grid[x][y].checkValue()
+                && n < SIZE_LINE && !this.grid[x + m][y].seeLine(Square.LEFT_RIGHT))
         {
             n++;
             m++;
         }
         m--;
-        if (n == TicTacToe.SIZE_LINE)
+        if (n == SIZE_LINE)
         {
-            // TODO (fix) Add an attribute score and add one point here
+            // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en LEFT_RIGHT");
-            for (n = TicTacToe.SIZE_LINE - 1; n >= 0; n--)
+            this.score[player]++;
+            for (n = SIZE_LINE - 1; n >= 0; n--)
             {
-                this.grid[x + m - n][y].useLine(LEFT_RIGHT);
+                this.grid[x + m - n][y].useLine(Square.LEFT_RIGHT);
             }
         }
 
@@ -209,52 +206,54 @@ public class TicTacToe
         m = 1;
         // Check UPLEFT_DOWNRIGHT -------
         while ((y - n) >= 0 && (x - n) >= 0 && this.grid[x - n][y - n].checkValue() == this.grid[x][y].checkValue()
-                && n < TicTacToe.SIZE_LINE && !this.grid[x - n][y - n].seeLine(UPLEFT_DOWNRIGHT))
+                && n < SIZE_LINE && !this.grid[x - n][y - n].seeLine(Square.UPLEFT_DOWNRIGHT))
         {
             n++;
         }
-        while ((y + m) < TicTacToe.SIZE && (x + m) < TicTacToe.SIZE
-                && this.grid[x + m][y + m].checkValue() == this.grid[x][y].checkValue() && n < TicTacToe.SIZE_LINE
-                && !this.grid[x + m][y + m].seeLine(UPLEFT_DOWNRIGHT))
+        while ((y + m) < SIZE && (x + m) < SIZE
+                && this.grid[x + m][y + m].checkValue() == this.grid[x][y].checkValue() && n < SIZE_LINE
+                && !this.grid[x + m][y + m].seeLine(Square.UPLEFT_DOWNRIGHT))
         {
             n++;
             m++;
         }
         m--;
-        if (n == TicTacToe.SIZE_LINE)
+        if (n == SIZE_LINE)
         {
-            // TODO (fix) Add an attribute score and add one point here
+            // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en UPLEFT_DOWNRIGHT");
-            for (n = TicTacToe.SIZE_LINE - 1; n >= 0; n--)
+            this.score[player]++;
+            for (n = SIZE_LINE - 1; n >= 0; n--)
             {
-                this.grid[x + m - n][y + m - n].useLine(UPLEFT_DOWNRIGHT);
+                this.grid[x + m - n][y + m - n].useLine(Square.UPLEFT_DOWNRIGHT);
             }
         }
 
         n = 1;
         m = 1;
         // Check UPRIGHT_DOWNLEFT -------
-        while ((y - n) >= 0 && (x + n) < TicTacToe.SIZE
-                && this.grid[x + n][y - n].checkValue() == this.grid[x][y].checkValue() && n < TicTacToe.SIZE_LINE
-                && !this.grid[x + n][y - n].seeLine(UPRIGHT_DOWNLEFT))
+        while ((y - n) >= 0 && (x + n) < SIZE
+                && this.grid[x + n][y - n].checkValue() == this.grid[x][y].checkValue() && n < SIZE_LINE
+                && !this.grid[x + n][y - n].seeLine(Square.UPRIGHT_DOWNLEFT))
         {
             n++;
         }
-        while ((y + m) < TicTacToe.SIZE && (x - m) >= 0
-                && this.grid[x - m][y + m].checkValue() == this.grid[x][y].checkValue() && n < TicTacToe.SIZE_LINE
-                && !this.grid[x - m][y + m].seeLine(UPRIGHT_DOWNLEFT))
+        while ((y + m) < SIZE && (x - m) >= 0
+                && this.grid[x - m][y + m].checkValue() == this.grid[x][y].checkValue() && n < SIZE_LINE
+                && !this.grid[x - m][y + m].seeLine(Square.UPRIGHT_DOWNLEFT))
         {
             n++;
             m++;
         }
         m--;
-        if (n == TicTacToe.SIZE_LINE)
+        if (n == SIZE_LINE)
         {
-            // TODO (fix) Add an attribute score and add one point here
+            // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en UPRIGHT_DOWNLEFT");
-            for (n = TicTacToe.SIZE_LINE - 1; n >= 0; n--)
+            this.score[player]++;
+            for (n = SIZE_LINE - 1; n >= 0; n--)
             {
-                this.grid[x - m + n][y + m - n].useLine(UPRIGHT_DOWNLEFT);
+                this.grid[x - m + n][y + m - n].useLine(Square.UPRIGHT_DOWNLEFT);
             }
         }
     }

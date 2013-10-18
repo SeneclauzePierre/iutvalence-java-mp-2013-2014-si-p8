@@ -15,8 +15,7 @@ public class Main
      */
     public static void main(String[] args)
     {
-        // TODO (fix) simplify
-        TicTacToe Game = new TicTacToe();
-        Game.play();
+        // TODO (FIXED) simplify
+        new TicTacToe().play();
     }
 }
