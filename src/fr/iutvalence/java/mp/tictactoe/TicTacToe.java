@@ -14,66 +14,80 @@ package fr.iutvalence.java.mp.tictactoe;
  */
 public class TicTacToe
 {
-    // TODO (FIXED) these constants are already defined in Square
     
     // TODO (FIXED) detail comment
     /**
-     * SIZE The maximum size of the grid
-     * A maximum of SIZE symbols can be placed on a grid's line or column
-     * After that, the grid's line/column is full
+     * Default grid size (grid is supposed to have the same height and width)
      */
-    public final static int SIZE = 16;
+    public final static int DEFAULT_GRID_SIZE = 16;
 
     // TODO (FIXED) detail comment
     /**
-     * SIZE_LINE The number of symbols that need to be lined up to score
-     * When SIZE_LINE symbols are lined up, the player playing these symbols scores
+     * Number of marks that need to be aligned in order to score
      */
-    public final static int SIZE_LINE = 5;
+    public final static int NUMBER_OF_MARKS_NEEDED_TO_SCORE = 5;
     
     /**
-     * MAX_TURN
-     * The number of turns played before the end of the game
+     * 
+     * The default duration of the game in number of turns
      */
-    public final static int MAX_TURN = 100;
+    public final static int DEFAULT_NUMBER_OF_TURNS = 100;
     
     /**
-     * N_PLAYERS
-     * The number of players (these comments are getting more and more obvious, aren't they ?)
+     * 
+     * The default number of players 
      */
-    public final static int N_PLAYERS = 2;
+    public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
 
     /**
-     * grid[Ordinate][Abscissa] Game's grid
+     * grid[line][column] Game's grid
      */
     private Square[][] grid;
     
     /**
      * score[ID's player] Keeps track of each player's score
      */
-    private int[] score;
+    private int[] playersScores;
     
 
     /**
-     * TicTacToe Constructor This method generates a 16x16 grid and allows for a
-     * new game to start
+     *  
+     * Creates a new TicTacToe game, with a grid whose size is <tt>DEFAULT_GRID_SIZE</tt>*
+     *
      */
     public TicTacToe()
     {
-        this.grid = new Square[SIZE][SIZE];
-        int ord, abs; // Point respectively on an ordinate and an abscissa
-        for (ord = 0; ord < SIZE; ord++)
+        initGrid();
+        
+        initPlayersScores();
+    }
+
+    /**
+     * 
+     */
+    private void initPlayersScores()
+    {
+        this.playersScores = new int[DEFAULT_NUMBER_OF_PLAYERS];
+
+        for (int playerNumber = 0; playerNumber < DEFAULT_NUMBER_OF_PLAYERS; playerNumber++)
         {
-            for (abs = 0; abs < SIZE; abs++)
-            {
-                this.grid[abs][ord] = new Square();
-            }
+            this.playersScores[playerNumber] = 0; 
         }
-        this.score = new int[N_PLAYERS + 1];
-        int player;
-        for (player = 1; player <= N_PLAYERS; player++)
+    }
+
+    /**
+     * 
+     */
+    private void initGrid()
+    {
+        this.grid = new Square[DEFAULT_GRID_SIZE][DEFAULT_GRID_SIZE];
+        
+        for (int lineNumber = 0; lineNumber < DEFAULT_GRID_SIZE; lineNumber++)
         {
-            this.score[player] = 0; 
+            for (int columnNumber = 0; columnNumber < DEFAULT_GRID_SIZE; columnNumber++)
+            {
+                this.grid[columnNumber][lineNumber] = new Square();
+            }
         }
     }
     
@@ -83,34 +97,30 @@ public class TicTacToe
      */
     public void play()
     {
-        int turn = 0;
-        int player;
         boolean verif = false;
         // TODO (FIXED) declare hard-coded values as constants
         
-        while (turn < MAX_TURN) /* Victory or end of game conditions (to be modified) */
+ 
+        for (int turn=0; turn < DEFAULT_NUMBER_OF_TURNS; turn++) /* Victory or end of game conditions (to be modified) */
         {
-            for (player = 1; player <= N_PLAYERS; player++)
+            for (int player = 0; player < DEFAULT_NUMBER_OF_PLAYERS; player++)
             {
-                while (!verif)
+                while (true)
                 {
-                    int abs = (int) (SIZE * Math.random());
-                    int ord = (int) (SIZE * Math.random());
-                    verif = this.gameTurn(player, abs, ord);
-                    System.out.println("Joueur " + player + " a posé sa marque en [" + abs + "," + ord + "] -- Tour : "
-                            + (turn + 1));
-                    if (!verif)
+                    int abs = (int) (DEFAULT_GRID_SIZE * Math.random());
+                    int ord = (int) (DEFAULT_GRID_SIZE * Math.random());
+                    if (this.gameTurn(player, abs, ord))
                     {
-                        System.out.println("...mais est un gros boulet !");
+                        System.out.println("Joueur " + player + " a posé sa marque en [" + abs + "," + ord + "] -- Tour : "
+                            + (turn + 1));
+                        break;
                     }
-                    abs++;
+                    System.out.println("...mais est un gros boulet !");
                 }
-                verif = false;
             }
-            turn++;
         }
-        for (player = 1; player <= N_PLAYERS; player++)
-            System.out.println("Score Joueur " + player + " : "+ this.score[player]);
+        for (int player = 0; player < DEFAULT_NUMBER_OF_PLAYERS; player++)
+            System.out.println("Score Joueur " + player + " : "+ this.playersScores[player]);
     }
 
     /**
@@ -153,23 +163,23 @@ public class TicTacToe
         int numberofsymbolsbelow = 1;
         // Check UP_DOWN --------
         while ((ord - numberofsurroundingsymbols) >= 0 && this.grid[abs][ord - numberofsurroundingsymbols].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < SIZE_LINE && !this.grid[abs][ord - numberofsurroundingsymbols].seeLine(Square.UP_DOWN))
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs][ord - numberofsurroundingsymbols].seeLine(Square.UP_DOWN))
         {
             numberofsurroundingsymbols++;
         }
-        while ((ord + numberofsymbolsbelow) < SIZE && this.grid[abs][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < SIZE_LINE && !this.grid[abs][ord + numberofsymbolsbelow].seeLine(Square.UP_DOWN))
+        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE && this.grid[abs][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue()
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs][ord + numberofsymbolsbelow].seeLine(Square.UP_DOWN))
         {
             numberofsurroundingsymbols++;
             numberofsymbolsbelow++;
         }
         numberofsymbolsbelow--;
-        if (numberofsurroundingsymbols == SIZE_LINE)
+        if (numberofsurroundingsymbols == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
         {
             // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en UP_DOWN");
-            this.score[player]++;
-            for (numberofsurroundingsymbols = SIZE_LINE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
+            this.playersScores[player]++;
+            for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
             {
                 this.grid[abs][ord + numberofsymbolsbelow - numberofsurroundingsymbols].seeLine(Square.UP_DOWN);
             }
@@ -179,23 +189,23 @@ public class TicTacToe
         numberofsymbolsbelow = 1;
         // Check LEFT_RIGHT --------
         while ((abs - numberofsurroundingsymbols) >= 0 && this.grid[abs - numberofsurroundingsymbols][ord].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < SIZE_LINE && !this.grid[abs - numberofsurroundingsymbols][ord].seeLine(Square.LEFT_RIGHT))
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs - numberofsurroundingsymbols][ord].seeLine(Square.LEFT_RIGHT))
         {
             numberofsurroundingsymbols++;
         }
-        while ((abs + numberofsymbolsbelow) < SIZE && this.grid[abs + numberofsymbolsbelow][ord].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < SIZE_LINE && !this.grid[abs + numberofsymbolsbelow][ord].seeLine(Square.LEFT_RIGHT))
+        while ((abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE && this.grid[abs + numberofsymbolsbelow][ord].checkValue() == this.grid[abs][ord].checkValue()
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs + numberofsymbolsbelow][ord].seeLine(Square.LEFT_RIGHT))
         {
             numberofsurroundingsymbols++;
             numberofsymbolsbelow++;
         }
         numberofsymbolsbelow--;
-        if (numberofsurroundingsymbols == SIZE_LINE)
+        if (numberofsurroundingsymbols == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
         {
             // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en LEFT_RIGHT");
-            this.score[player]++;
-            for (numberofsurroundingsymbols = SIZE_LINE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
+            this.playersScores[player]++;
+            for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
             {
                 this.grid[abs + numberofsymbolsbelow - numberofsurroundingsymbols][ord].useLine(Square.LEFT_RIGHT);
             }
@@ -205,24 +215,24 @@ public class TicTacToe
         numberofsymbolsbelow = 1;
         // Check UPLEFT_DOWNRIGHT -------
         while ((ord - numberofsurroundingsymbols) >= 0 && (abs - numberofsurroundingsymbols) >= 0 && this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < SIZE_LINE && !this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols].seeLine(Square.UPLEFT_DOWNRIGHT))
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols].seeLine(Square.UPLEFT_DOWNRIGHT))
         {
             numberofsurroundingsymbols++;
         }
-        while ((ord + numberofsymbolsbelow) < SIZE && (abs + numberofsymbolsbelow) < SIZE
-                && this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < SIZE_LINE
+        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE && (abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
+                && this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
                 && !this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].seeLine(Square.UPLEFT_DOWNRIGHT))
         {
             numberofsurroundingsymbols++;
             numberofsymbolsbelow++;
         }
         numberofsymbolsbelow--;
-        if (numberofsurroundingsymbols == SIZE_LINE)
+        if (numberofsurroundingsymbols == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
         {
             // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en UPLEFT_DOWNRIGHT");
-            this.score[player]++;
-            for (numberofsurroundingsymbols = SIZE_LINE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
+            this.playersScores[player]++;
+            for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
             {
                 this.grid[abs + numberofsymbolsbelow - numberofsurroundingsymbols][ord + numberofsymbolsbelow - numberofsurroundingsymbols].useLine(Square.UPLEFT_DOWNRIGHT);
             }
@@ -231,26 +241,26 @@ public class TicTacToe
         numberofsurroundingsymbols = 1;
         numberofsymbolsbelow = 1;
         // Check UPRIGHT_DOWNLEFT -------
-        while ((ord - numberofsurroundingsymbols) >= 0 && (abs + numberofsurroundingsymbols) < SIZE
-                && this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < SIZE_LINE
+        while ((ord - numberofsurroundingsymbols) >= 0 && (abs + numberofsurroundingsymbols) < DEFAULT_GRID_SIZE
+                && this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
                 && !this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols].seeLine(Square.UPRIGHT_DOWNLEFT))
         {
             numberofsurroundingsymbols++;
         }
-        while ((ord + numberofsymbolsbelow) < SIZE && (abs - numberofsymbolsbelow) >= 0
-                && this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < SIZE_LINE
+        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE && (abs - numberofsymbolsbelow) >= 0
+                && this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
                 && !this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].seeLine(Square.UPRIGHT_DOWNLEFT))
         {
             numberofsurroundingsymbols++;
             numberofsymbolsbelow++;
         }
         numberofsymbolsbelow--;
-        if (numberofsurroundingsymbols == SIZE_LINE)
+        if (numberofsurroundingsymbols == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
         {
             // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en UPRIGHT_DOWNLEFT");
-            this.score[player]++;
-            for (numberofsurroundingsymbols = SIZE_LINE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
+            this.playersScores[player]++;
+            for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
             {
                 this.grid[abs - numberofsymbolsbelow + numberofsurroundingsymbols][ord + numberofsymbolsbelow - numberofsurroundingsymbols].useLine(Square.UPRIGHT_DOWNLEFT);
             }
