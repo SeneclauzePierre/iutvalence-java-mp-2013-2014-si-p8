@@ -14,28 +14,26 @@ package fr.iutvalence.java.mp.tictactoe;
  */
 public class TicTacToe
 {
-    
-    // TODO (FIXED) detail comment
+
     /**
      * Default grid size (grid is supposed to have the same height and width)
      */
     public final static int DEFAULT_GRID_SIZE = 16;
 
-    // TODO (FIXED) detail comment
     /**
      * Number of marks that need to be aligned in order to score
      */
     public final static int NUMBER_OF_MARKS_NEEDED_TO_SCORE = 5;
-    
+
     /**
      * 
      * The default duration of the game in number of turns
      */
     public final static int DEFAULT_NUMBER_OF_TURNS = 100;
-    
+
     /**
      * 
-     * The default number of players 
+     * The default number of players
      */
     public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
 
@@ -43,22 +41,22 @@ public class TicTacToe
      * grid[line][column] Game's grid
      */
     private Square[][] grid;
-    
+
     /**
      * score[ID's player] Keeps track of each player's score
      */
     private int[] playersScores;
-    
 
     /**
-     *  
-     * Creates a new TicTacToe game, with a grid whose size is <tt>DEFAULT_GRID_SIZE</tt>*
-     *
+     * 
+     * Creates a new TicTacToe game, with a grid whose size is
+     * <tt>DEFAULT_GRID_SIZE</tt>*
+     * 
      */
     public TicTacToe()
     {
         initGrid();
-        
+
         initPlayersScores();
     }
 
@@ -71,7 +69,7 @@ public class TicTacToe
 
         for (int playerNumber = 0; playerNumber < DEFAULT_NUMBER_OF_PLAYERS; playerNumber++)
         {
-            this.playersScores[playerNumber] = 0; 
+            this.playersScores[playerNumber] = 0;
         }
     }
 
@@ -81,7 +79,7 @@ public class TicTacToe
     private void initGrid()
     {
         this.grid = new Square[DEFAULT_GRID_SIZE][DEFAULT_GRID_SIZE];
-        
+
         for (int lineNumber = 0; lineNumber < DEFAULT_GRID_SIZE; lineNumber++)
         {
             for (int columnNumber = 0; columnNumber < DEFAULT_GRID_SIZE; columnNumber++)
@@ -90,7 +88,7 @@ public class TicTacToe
             }
         }
     }
-    
+
     /**
      * play Handles the whole game from beginning to end, according to the
      * rules. Makes the players play one after another.
@@ -98,10 +96,11 @@ public class TicTacToe
     public void play()
     {
         boolean verif = false;
-        // TODO (FIXED) declare hard-coded values as constants
-        
- 
-        for (int turn=0; turn < DEFAULT_NUMBER_OF_TURNS; turn++) /* Victory or end of game conditions (to be modified) */
+
+        for (int turn = 0; turn < DEFAULT_NUMBER_OF_TURNS; turn++)
+        /*
+         * Victory or end of game conditions (to be modified)
+         */
         {
             for (int player = 0; player < DEFAULT_NUMBER_OF_PLAYERS; player++)
             {
@@ -111,8 +110,8 @@ public class TicTacToe
                     int ord = (int) (DEFAULT_GRID_SIZE * Math.random());
                     if (this.gameTurn(player, abs, ord))
                     {
-                        System.out.println("Joueur " + player + " a posé sa marque en [" + abs + "," + ord + "] -- Tour : "
-                            + (turn + 1));
+                        System.out.println("Joueur " + player + " a posé sa marque en [" + abs + "," + ord
+                                + "] -- Tour : " + (turn + 1));
                         break;
                     }
                     System.out.println("...mais est un gros boulet !");
@@ -120,7 +119,7 @@ public class TicTacToe
             }
         }
         for (int player = 0; player < DEFAULT_NUMBER_OF_PLAYERS; player++)
-            System.out.println("Score Joueur " + player + " : "+ this.playersScores[player]);
+            System.out.println("Score Joueur " + player + " : " + this.playersScores[player]);
     }
 
     /**
@@ -143,6 +142,7 @@ public class TicTacToe
             this.checkLine(player, abs, ord);
             return true;
         }
+        // TODO (fix) simplify
         else
             return false;
     }
@@ -157,18 +157,23 @@ public class TicTacToe
      * @param ord
      *            Abscissa of the square in which the symbol has been placed
      */
+    // TODO (fix) make this method more readable
     private void checkLine(int player, int abs, int ord)
     {
-        int numberofsurroundingsymbols = 1; 
+        int numberofsurroundingsymbols = 1;
         int numberofsymbolsbelow = 1;
         // Check UP_DOWN --------
-        while ((ord - numberofsurroundingsymbols) >= 0 && this.grid[abs][ord - numberofsurroundingsymbols].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs][ord - numberofsurroundingsymbols].seeLine(Square.UP_DOWN))
+        while ((ord - numberofsurroundingsymbols) >= 0
+                && this.grid[abs][ord - numberofsurroundingsymbols].getValue() == this.grid[abs][ord].getValue()
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs][ord - numberofsurroundingsymbols].seeLine(Square.UP_DOWN))
         {
             numberofsurroundingsymbols++;
         }
-        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE && this.grid[abs][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs][ord + numberofsymbolsbelow].seeLine(Square.UP_DOWN))
+        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
+                && this.grid[abs][ord + numberofsymbolsbelow].getValue() == this.grid[abs][ord].getValue()
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs][ord + numberofsymbolsbelow].seeLine(Square.UP_DOWN))
         {
             numberofsurroundingsymbols++;
             numberofsymbolsbelow++;
@@ -188,13 +193,17 @@ public class TicTacToe
         numberofsurroundingsymbols = 1;
         numberofsymbolsbelow = 1;
         // Check LEFT_RIGHT --------
-        while ((abs - numberofsurroundingsymbols) >= 0 && this.grid[abs - numberofsurroundingsymbols][ord].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs - numberofsurroundingsymbols][ord].seeLine(Square.LEFT_RIGHT))
+        while ((abs - numberofsurroundingsymbols) >= 0
+                && this.grid[abs - numberofsurroundingsymbols][ord].getValue() == this.grid[abs][ord].getValue()
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs - numberofsurroundingsymbols][ord].seeLine(Square.LEFT_RIGHT))
         {
             numberofsurroundingsymbols++;
         }
-        while ((abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE && this.grid[abs + numberofsymbolsbelow][ord].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs + numberofsymbolsbelow][ord].seeLine(Square.LEFT_RIGHT))
+        while ((abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
+                && this.grid[abs + numberofsymbolsbelow][ord].getValue() == this.grid[abs][ord].getValue()
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs + numberofsymbolsbelow][ord].seeLine(Square.LEFT_RIGHT))
         {
             numberofsurroundingsymbols++;
             numberofsymbolsbelow++;
@@ -214,13 +223,20 @@ public class TicTacToe
         numberofsurroundingsymbols = 1;
         numberofsymbolsbelow = 1;
         // Check UPLEFT_DOWNRIGHT -------
-        while ((ord - numberofsurroundingsymbols) >= 0 && (abs - numberofsurroundingsymbols) >= 0 && this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols].checkValue() == this.grid[abs][ord].checkValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE && !this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols].seeLine(Square.UPLEFT_DOWNRIGHT))
+        while ((ord - numberofsurroundingsymbols) >= 0
+                && (abs - numberofsurroundingsymbols) >= 0
+                && this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols].getValue() == this.grid[abs][ord]
+                        .getValue()
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols]
+                        .seeLine(Square.UPLEFT_DOWNRIGHT))
         {
             numberofsurroundingsymbols++;
         }
-        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE && (abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
-                && this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
+                && (abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
+                && this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].getValue() == this.grid[abs][ord]
+                        .getValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
                 && !this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].seeLine(Square.UPLEFT_DOWNRIGHT))
         {
             numberofsurroundingsymbols++;
@@ -234,21 +250,28 @@ public class TicTacToe
             this.playersScores[player]++;
             for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
             {
-                this.grid[abs + numberofsymbolsbelow - numberofsurroundingsymbols][ord + numberofsymbolsbelow - numberofsurroundingsymbols].useLine(Square.UPLEFT_DOWNRIGHT);
+                this.grid[abs + numberofsymbolsbelow - numberofsurroundingsymbols][ord + numberofsymbolsbelow
+                        - numberofsurroundingsymbols].useLine(Square.UPLEFT_DOWNRIGHT);
             }
         }
 
         numberofsurroundingsymbols = 1;
         numberofsymbolsbelow = 1;
         // Check UPRIGHT_DOWNLEFT -------
-        while ((ord - numberofsurroundingsymbols) >= 0 && (abs + numberofsurroundingsymbols) < DEFAULT_GRID_SIZE
-                && this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
-                && !this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols].seeLine(Square.UPRIGHT_DOWNLEFT))
+        while ((ord - numberofsurroundingsymbols) >= 0
+                && (abs + numberofsurroundingsymbols) < DEFAULT_GRID_SIZE
+                && this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols].getValue() == this.grid[abs][ord]
+                        .getValue()
+                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols]
+                        .seeLine(Square.UPRIGHT_DOWNLEFT))
         {
             numberofsurroundingsymbols++;
         }
-        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE && (abs - numberofsymbolsbelow) >= 0
-                && this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].checkValue() == this.grid[abs][ord].checkValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
+                && (abs - numberofsymbolsbelow) >= 0
+                && this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].getValue() == this.grid[abs][ord]
+                        .getValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
                 && !this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].seeLine(Square.UPRIGHT_DOWNLEFT))
         {
             numberofsurroundingsymbols++;
@@ -262,7 +285,8 @@ public class TicTacToe
             this.playersScores[player]++;
             for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
             {
-                this.grid[abs - numberofsymbolsbelow + numberofsurroundingsymbols][ord + numberofsymbolsbelow - numberofsurroundingsymbols].useLine(Square.UPRIGHT_DOWNLEFT);
+                this.grid[abs - numberofsymbolsbelow + numberofsurroundingsymbols][ord + numberofsymbolsbelow
+                        - numberofsurroundingsymbols].useLine(Square.UPRIGHT_DOWNLEFT);
             }
         }
     }

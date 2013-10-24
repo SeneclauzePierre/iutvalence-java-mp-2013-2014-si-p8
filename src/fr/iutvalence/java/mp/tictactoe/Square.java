@@ -1,6 +1,5 @@
 package fr.iutvalence.java.mp.tictactoe;
 
-// TODO (EXPLAINED) i am not really sure of understanding the exact purpose of this class
 /**
  * Square
  * 
@@ -23,15 +22,18 @@ public class Square
      * UP_DOWN This constant represents the direction Up to Down
      */
     public final static int UP_DOWN = 0;
+    
     /**
      * LEFT_RIGHT This constant represents the direction Left to Right
      */
     public final static int LEFT_RIGHT = 1;
+    
     /**
      * UPLEFT_DOWNRIGHT This constant represents the direction UpLeft to
      * DownRight
      */
     public final static int UPLEFT_DOWNRIGHT = 2;
+    
     /**
      * UPRIGHT_DOWNLEFT This constant represents the direction UpRight to
      * DownLeft
@@ -57,8 +59,10 @@ public class Square
      */
     public Square()
     {
-        this.direction = new boolean[4];
         this.value = Square.EMPTY;
+        
+        // TODO (fix) declare hard-coded values as constants
+        this.direction = new boolean[4];        
         this.direction[Square.UP_DOWN] = false;
         this.direction[Square.LEFT_RIGHT] = false;
         this.direction[Square.UPLEFT_DOWNRIGHT] = false;
@@ -72,6 +76,7 @@ public class Square
      */
     public boolean isEmpty()
     {
+        // TODO (fix) simplify
         if (this.value == Square.EMPTY)
             return true;
         else
@@ -94,7 +99,7 @@ public class Square
      * 
      * @return : the square's value (duh!)
      */
-    public int checkValue()
+    public int getValue()
     {
         return this.value;
     }
