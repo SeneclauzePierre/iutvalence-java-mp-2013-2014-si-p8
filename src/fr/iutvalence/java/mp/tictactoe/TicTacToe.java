@@ -15,11 +15,7 @@ package fr.iutvalence.java.mp.tictactoe;
 public class TicTacToe
 {
 
-    /**
-     * Default grid size (grid is supposed to have the same height and width)
-     */
-    public final static int DEFAULT_GRID_SIZE = 16;
-
+   
     /**
      * Number of marks that need to be aligned in order to score
      */
@@ -37,10 +33,8 @@ public class TicTacToe
      */
     public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
 
-    /**
-     * grid[line][column] Game's grid
-     */
-    private Square[][] grid;
+    
+    private Grid grid;
 
     /**
      * score[ID's player] Keeps track of each player's score
@@ -55,8 +49,8 @@ public class TicTacToe
      */
     public TicTacToe()
     {
-        initGrid();
-
+        this.grid = new Grid();
+        
         initPlayersScores();
     }
 
@@ -70,22 +64,6 @@ public class TicTacToe
         for (int playerNumber = 0; playerNumber < DEFAULT_NUMBER_OF_PLAYERS; playerNumber++)
         {
             this.playersScores[playerNumber] = 0;
-        }
-    }
-
-    /**
-     * 
-     */
-    private void initGrid()
-    {
-        this.grid = new Square[DEFAULT_GRID_SIZE][DEFAULT_GRID_SIZE];
-
-        for (int lineNumber = 0; lineNumber < DEFAULT_GRID_SIZE; lineNumber++)
-        {
-            for (int columnNumber = 0; columnNumber < DEFAULT_GRID_SIZE; columnNumber++)
-            {
-                this.grid[columnNumber][lineNumber] = new Square();
-            }
         }
     }
 
@@ -106,9 +84,9 @@ public class TicTacToe
             {
                 while (true)
                 {
-                    int abs = (int) (DEFAULT_GRID_SIZE * Math.random());
-                    int ord = (int) (DEFAULT_GRID_SIZE * Math.random());
-                    if (this.gameTurn(player, abs, ord))
+                    int abs = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
+                    int ord = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
+                    if (this.gameTurn(player, new Position(abs, ord)))
                     {
                         System.out.println("Joueur " + player + " a posé sa marque en [" + abs + "," + ord
                                 + "] -- Tour : " + (turn + 1));
@@ -131,20 +109,26 @@ public class TicTacToe
      *            Ordinate of the square in which the player places his symbol
      * @param ord
      *            Abscissa of the square in which the player places his symbol
+     * @param position 
      * @return A boolean stating if the symbol was successfully place
      */
-    private boolean gameTurn(int player, int abs, int ord)
+    private boolean gameTurn(int player, Position position)
     {
-        if (this.grid[abs][ord].isEmpty())
+        Square square = null;
+        try
         {
-            /* If the player chose an empty square... */
-            this.grid[abs][ord].newValue(player);
-            this.checkLine(player, abs, ord);
-            return true;
+            square = this.grid.getSquareAt(position);
         }
-        // TODO (fix) simplify
-        else
-            return false;
+        catch (PositionOutOfBoundsException e)
+        {
+         return false;
+        }
+        
+        /* If the player chose an empty square... */
+        square.udpateMark(player);
+        this.checkLine(player, position);
+        return true;
+
     }
 
     /**
@@ -158,135 +142,144 @@ public class TicTacToe
      *            Abscissa of the square in which the symbol has been placed
      */
     // TODO (fix) make this method more readable
-    private void checkLine(int player, int abs, int ord)
+    private void checkLine(int player, Position position)
     {
-        int numberofsurroundingsymbols = 1;
-        int numberofsymbolsbelow = 1;
-        // Check UP_DOWN --------
-        while ((ord - numberofsurroundingsymbols) >= 0
-                && this.grid[abs][ord - numberofsurroundingsymbols].getValue() == this.grid[abs][ord].getValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
-                && !this.grid[abs][ord - numberofsurroundingsymbols].seeLine(Square.UP_DOWN))
-        {
-            numberofsurroundingsymbols++;
-        }
-        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
-                && this.grid[abs][ord + numberofsymbolsbelow].getValue() == this.grid[abs][ord].getValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
-                && !this.grid[abs][ord + numberofsymbolsbelow].seeLine(Square.UP_DOWN))
-        {
-            numberofsurroundingsymbols++;
-            numberofsymbolsbelow++;
-        }
-        numberofsymbolsbelow--;
-        if (numberofsurroundingsymbols == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
-        {
-            // TODO (FIXED) Add an attribute score and add one point here
-            System.out.println("-- Joueur " + player + " a complété une ligne en UP_DOWN");
-            this.playersScores[player]++;
-            for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
-            {
-                this.grid[abs][ord + numberofsymbolsbelow - numberofsurroundingsymbols].seeLine(Square.UP_DOWN);
-            }
-        }
+        
+        checkUpDown(player, position);
 
-        numberofsurroundingsymbols = 1;
+        numberOfSimilarSymbolsConnectedOnSameLine = 1;
         numberofsymbolsbelow = 1;
         // Check LEFT_RIGHT --------
-        while ((abs - numberofsurroundingsymbols) >= 0
-                && this.grid[abs - numberofsurroundingsymbols][ord].getValue() == this.grid[abs][ord].getValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
-                && !this.grid[abs - numberofsurroundingsymbols][ord].seeLine(Square.LEFT_RIGHT))
+        while ((abs - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
+                && this.grid[abs - numberOfSimilarSymbolsConnectedOnSameLine][ord].getValue() == this.grid[abs][ord].getValue()
+                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs - numberOfSimilarSymbolsConnectedOnSameLine][ord].seeLine(Square.LEFT_RIGHT))
         {
-            numberofsurroundingsymbols++;
+            numberOfSimilarSymbolsConnectedOnSameLine++;
         }
         while ((abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
                 && this.grid[abs + numberofsymbolsbelow][ord].getValue() == this.grid[abs][ord].getValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_NEEDED_TO_SCORE
                 && !this.grid[abs + numberofsymbolsbelow][ord].seeLine(Square.LEFT_RIGHT))
         {
-            numberofsurroundingsymbols++;
+            numberOfSimilarSymbolsConnectedOnSameLine++;
             numberofsymbolsbelow++;
         }
         numberofsymbolsbelow--;
-        if (numberofsurroundingsymbols == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
+        if (numberOfSimilarSymbolsConnectedOnSameLine == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
         {
             // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en LEFT_RIGHT");
             this.playersScores[player]++;
-            for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
+            for (numberOfSimilarSymbolsConnectedOnSameLine = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberOfSimilarSymbolsConnectedOnSameLine >= 0; numberOfSimilarSymbolsConnectedOnSameLine--)
             {
-                this.grid[abs + numberofsymbolsbelow - numberofsurroundingsymbols][ord].useLine(Square.LEFT_RIGHT);
+                this.grid[abs + numberofsymbolsbelow - numberOfSimilarSymbolsConnectedOnSameLine][ord].useLine(Square.LEFT_RIGHT);
             }
         }
 
-        numberofsurroundingsymbols = 1;
+        numberOfSimilarSymbolsConnectedOnSameLine = 1;
         numberofsymbolsbelow = 1;
         // Check UPLEFT_DOWNRIGHT -------
-        while ((ord - numberofsurroundingsymbols) >= 0
-                && (abs - numberofsurroundingsymbols) >= 0
-                && this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols].getValue() == this.grid[abs][ord]
+        while ((ord - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
+                && (abs - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
+                && this.grid[abs - numberOfSimilarSymbolsConnectedOnSameLine][ord - numberOfSimilarSymbolsConnectedOnSameLine].getValue() == this.grid[abs][ord]
                         .getValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
-                && !this.grid[abs - numberofsurroundingsymbols][ord - numberofsurroundingsymbols]
+                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs - numberOfSimilarSymbolsConnectedOnSameLine][ord - numberOfSimilarSymbolsConnectedOnSameLine]
                         .seeLine(Square.UPLEFT_DOWNRIGHT))
         {
-            numberofsurroundingsymbols++;
+            numberOfSimilarSymbolsConnectedOnSameLine++;
         }
         while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
                 && (abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
                 && this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].getValue() == this.grid[abs][ord]
-                        .getValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                        .getValue() && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_NEEDED_TO_SCORE
                 && !this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].seeLine(Square.UPLEFT_DOWNRIGHT))
         {
-            numberofsurroundingsymbols++;
+            numberOfSimilarSymbolsConnectedOnSameLine++;
             numberofsymbolsbelow++;
         }
         numberofsymbolsbelow--;
-        if (numberofsurroundingsymbols == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
+        if (numberOfSimilarSymbolsConnectedOnSameLine == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
         {
             // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en UPLEFT_DOWNRIGHT");
             this.playersScores[player]++;
-            for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
+            for (numberOfSimilarSymbolsConnectedOnSameLine = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberOfSimilarSymbolsConnectedOnSameLine >= 0; numberOfSimilarSymbolsConnectedOnSameLine--)
             {
-                this.grid[abs + numberofsymbolsbelow - numberofsurroundingsymbols][ord + numberofsymbolsbelow
-                        - numberofsurroundingsymbols].useLine(Square.UPLEFT_DOWNRIGHT);
+                this.grid[abs + numberofsymbolsbelow - numberOfSimilarSymbolsConnectedOnSameLine][ord + numberofsymbolsbelow
+                        - numberOfSimilarSymbolsConnectedOnSameLine].useLine(Square.UPLEFT_DOWNRIGHT);
             }
         }
 
-        numberofsurroundingsymbols = 1;
+        numberOfSimilarSymbolsConnectedOnSameLine = 1;
         numberofsymbolsbelow = 1;
         // Check UPRIGHT_DOWNLEFT -------
-        while ((ord - numberofsurroundingsymbols) >= 0
-                && (abs + numberofsurroundingsymbols) < DEFAULT_GRID_SIZE
-                && this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols].getValue() == this.grid[abs][ord]
+        while ((ord - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
+                && (abs + numberOfSimilarSymbolsConnectedOnSameLine) < DEFAULT_GRID_SIZE
+                && this.grid[abs + numberOfSimilarSymbolsConnectedOnSameLine][ord - numberOfSimilarSymbolsConnectedOnSameLine].getValue() == this.grid[abs][ord]
                         .getValue()
-                && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
-                && !this.grid[abs + numberofsurroundingsymbols][ord - numberofsurroundingsymbols]
+                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid[abs + numberOfSimilarSymbolsConnectedOnSameLine][ord - numberOfSimilarSymbolsConnectedOnSameLine]
                         .seeLine(Square.UPRIGHT_DOWNLEFT))
         {
-            numberofsurroundingsymbols++;
+            numberOfSimilarSymbolsConnectedOnSameLine++;
         }
         while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
                 && (abs - numberofsymbolsbelow) >= 0
                 && this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].getValue() == this.grid[abs][ord]
-                        .getValue() && numberofsurroundingsymbols < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                        .getValue() && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_NEEDED_TO_SCORE
                 && !this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].seeLine(Square.UPRIGHT_DOWNLEFT))
         {
-            numberofsurroundingsymbols++;
+            numberOfSimilarSymbolsConnectedOnSameLine++;
             numberofsymbolsbelow++;
         }
         numberofsymbolsbelow--;
-        if (numberofsurroundingsymbols == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
+        if (numberOfSimilarSymbolsConnectedOnSameLine == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
         {
             // TODO (FIXED) Add an attribute score and add one point here
             System.out.println("-- Joueur " + player + " a complété une ligne en UPRIGHT_DOWNLEFT");
             this.playersScores[player]++;
-            for (numberofsurroundingsymbols = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberofsurroundingsymbols >= 0; numberofsurroundingsymbols--)
+            for (numberOfSimilarSymbolsConnectedOnSameLine = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberOfSimilarSymbolsConnectedOnSameLine >= 0; numberOfSimilarSymbolsConnectedOnSameLine--)
             {
-                this.grid[abs - numberofsymbolsbelow + numberofsurroundingsymbols][ord + numberofsymbolsbelow
-                        - numberofsurroundingsymbols].useLine(Square.UPRIGHT_DOWNLEFT);
+                this.grid[abs - numberofsymbolsbelow + numberOfSimilarSymbolsConnectedOnSameLine][ord + numberofsymbolsbelow
+                        - numberOfSimilarSymbolsConnectedOnSameLine].useLine(Square.UPRIGHT_DOWNLEFT);
+            }
+        }
+    }
+
+    /**
+     * @param player
+     */
+    private void checkUpDown(int player, Position position)
+    {
+        int numberOfSimilarSymbolsConnectedOnSameLine = 1;
+        int numberofsymbolsbelow = 1;
+        // Check UP_DOWN --------
+        while ((position.getLine() - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
+                && this.grid.getSquareAt(position.translate(0,(-numberOfSimilarSymbolsConnectedOnSameLine))).getValue() == this.grid.getSquareAt(position).getValue()
+                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid.getSquareAt(position.translate(0,(-numberOfSimilarSymbolsConnectedOnSameLine))).seeLine(Square.UP_DOWN))
+        {
+            numberOfSimilarSymbolsConnectedOnSameLine++;
+        }
+        while ((position.getLine() + numberofsymbolsbelow) < grid.DEFAULT_GRID_SIZE
+                && this.grid.getSquareAt(position.translate(0,numberOfSimilarSymbolsConnectedOnSameLine)).getValue() == this.grid.getSquareAt(position).getValue()
+                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_NEEDED_TO_SCORE
+                && !this.grid.getSquareAt(position.translate(0,numberOfSimilarSymbolsConnectedOnSameLine)).seeLine(Square.UP_DOWN))
+        {
+            numberOfSimilarSymbolsConnectedOnSameLine++;
+            numberofsymbolsbelow++;
+        }
+        numberofsymbolsbelow--;
+        if (numberOfSimilarSymbolsConnectedOnSameLine == NUMBER_OF_MARKS_NEEDED_TO_SCORE)
+        {
+            // TODO (FIXED) Add an attribute score and add one point here
+            System.out.println("-- Joueur " + player + " a complété une ligne en UP_DOWN");
+            this.playersScores[player]++;
+            for (numberOfSimilarSymbolsConnectedOnSameLine = NUMBER_OF_MARKS_NEEDED_TO_SCORE - 1; numberOfSimilarSymbolsConnectedOnSameLine >= 0; numberOfSimilarSymbolsConnectedOnSameLine--)
+            {
+                this.grid.getSquareAt(position.translate(0, numberofsymbolsbelow - numberOfSimilarSymbolsConnectedOnSameLine)).seeLine(Square.UP_DOWN);
             }
         }
     }

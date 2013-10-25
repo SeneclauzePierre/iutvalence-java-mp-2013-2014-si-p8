@@ -19,39 +19,17 @@ public class Square
     public final static int EMPTY = 0;
 
     /**
-     * UP_DOWN This constant represents the direction Up to Down
-     */
-    public final static int UP_DOWN = 0;
-    
-    /**
-     * LEFT_RIGHT This constant represents the direction Left to Right
-     */
-    public final static int LEFT_RIGHT = 1;
-    
-    /**
-     * UPLEFT_DOWNRIGHT This constant represents the direction UpLeft to
-     * DownRight
-     */
-    public final static int UPLEFT_DOWNRIGHT = 2;
-    
-    /**
-     * UPRIGHT_DOWNLEFT This constant represents the direction UpRight to
-     * DownLeft
-     */
-    public final static int UPRIGHT_DOWNLEFT = 3;
-
-    /**
      * value Is equal to one of the aforedefined constants ; determines the
      * symbol present in the square
      */
-    private int value;
+    private int mark;
 
     /**
      * direction A table of 4 boolean Each boolean represents one of the
      * aforementioned directions If it is true, then this square has been used
      * to complete a line in the corresponding direction Otherwise, it has not
      */
-    private boolean[] direction;
+    private LinesInfo linesInfo;
 
     /**
      * Square Class builder ; generates a new square, with no symbol in it, and
@@ -59,14 +37,10 @@ public class Square
      */
     public Square()
     {
-        this.value = Square.EMPTY;
+        this.mark = Square.EMPTY;
         
         // TODO (fix) declare hard-coded values as constants
-        this.direction = new boolean[4];        
-        this.direction[Square.UP_DOWN] = false;
-        this.direction[Square.LEFT_RIGHT] = false;
-        this.direction[Square.UPLEFT_DOWNRIGHT] = false;
-        this.direction[Square.UPRIGHT_DOWNLEFT] = false;
+       this.linesInfo = new LinesInfo();
     }
 
     /**
@@ -76,11 +50,7 @@ public class Square
      */
     public boolean isEmpty()
     {
-        // TODO (fix) simplify
-        if (this.value == Square.EMPTY)
-            return true;
-        else
-            return false;
+      return (this.mark == Square.EMPTY);
     }
 
     /**
@@ -89,9 +59,9 @@ public class Square
      * @param value
      *            : the new value
      */
-    public void newValue(int value)
+    public void udpateMark(int value)
     {
-        this.value = value;
+        this.mark = value;
     }
 
     /**
@@ -101,7 +71,7 @@ public class Square
      */
     public int getValue()
     {
-        return this.value;
+        return this.mark;
     }
 
     /**
@@ -114,7 +84,7 @@ public class Square
      */
     public boolean seeLine(int dir)
     {
-        return this.direction[dir];
+        return this.isPartOfLineByDirection[dir];
     }
 
     /**
@@ -126,7 +96,7 @@ public class Square
      */
     public void useLine(int dir)
     {
-        this.direction[dir] = true;
+        this.isPartOfLineByDirection[dir] = true;
     }
 
 }
