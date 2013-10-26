@@ -90,7 +90,7 @@ public class Square
      * @param dir
      *            Indicates the direction in which the line has been completed
      */
-    public void setPartOfLineByDirection(Axis axis)
+    public void setPartOfLineByAxis(Axis axis)
     {
         this.linesInfo.setIsPartOfLineByAxis(axis);
     }
