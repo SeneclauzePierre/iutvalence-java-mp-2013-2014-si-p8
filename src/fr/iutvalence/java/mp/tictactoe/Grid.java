@@ -34,6 +34,12 @@ public class Grid
         }
     }
 
+    private boolean isPositionInBounds(Position position)
+    {
+        return  !((position.getColumn() >= DEFAULT_GRID_SIZE || position.getColumn() < 0 
+                || position.getLine() >= DEFAULT_GRID_SIZE || position.getLine() <0));
+    }
+    
     /**
      * Returns the square at given position
      * @param position Position of square
@@ -42,9 +48,49 @@ public class Grid
      */
     public Square getSquareAt(Position position) throws PositionOutOfBoundsException
     {
-        if (position.getColumn() >= DEFAULT_GRID_SIZE || position.getColumn() < 0 
-                || position.getLine() >= DEFAULT_GRID_SIZE || position.getLine() <0) throw new PositionOutOfBoundsException();
+       if (!this.isPositionInBounds(position))  throw new PositionOutOfBoundsException();
         return this.grid[position.getColumn()][position.getLine()];
     }
+    
+    /**
+     * Create a position with a translate of the current position
+     * @param delatColumn the column translate
+     * @param deltaLine the line translate
+     * @return The new position
+     */
+    public Position getNeighbourPosition(Position origin, Direction direction) throws PositionOutOfBoundsException
+    {
+        Position result = null;
+        
+        switch (direction)
+        {
+        case UP : 
+            result = origin.translate(0, -1);
+            break;
+        case DOWN : 
+            result = origin.translate(0, 1);
+            break;
+        case LEFT : 
+            result = origin.translate(-1, 0);
+            break;
+        case RIGHT : 
+            result = origin.translate(1, 0);
+            break;
+        case UP_LEFT : 
+            result = origin.translate(-1, -1);
+            break;
+        case UP_RIGHT : 
+            result = origin.translate(1, -1);
+            break;
+        case DOWN_LEFT : 
+            result = origin.translate(-1, 1);
+            break;
+        default: /*DOWN_RIGHT*/  
+            result = origin.translate(1, 1);        
+        }
+        if (!this.isPositionInBounds(result)) throw new PositionOutOfBoundsException();
+        return result;
+    }
+
 
 }
