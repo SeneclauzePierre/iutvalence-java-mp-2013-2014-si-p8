@@ -88,7 +88,7 @@ public class TicTacToe
                     int line = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
                     
                     Position position = new Position(column, line);
-                    if (this.gameTurn(playerID, position))
+                    if (this.computeTurn(playerID, position))
                     {
                         System.out.println("Joueur " + playerID + " a posé sa marque en "+position
                                 + " -- Tour : " + (turn + 1));
@@ -114,21 +114,20 @@ public class TicTacToe
      * @param position 
      * @return A boolean stating if the symbol was successfully place
      */
-    private boolean gameTurn(int player, Position position)
-    {
-        Square square = null;
+    private boolean computeTurn(Mark mark, Position position)
+    {        
         try
         {
-            square = this.grid.getSquareAt(position);
+           this.grid.getSquareAt(position).mark(mark);
         }
-        catch (PositionOutOfBoundsException e)
+        // Here, catching Exception instead of catching PositionOutOfBounds and AlreadyMarkedException
+        // separately allows to simplify code because exception processing is the same in both cases
+        catch (Exception e)
         {
          return false;
-        }
-        
-        /* If the player chose an empty square... */
-        square.udpateMark(player);
-        this.findNewLines(player, position);
+        }        
+       
+        this.findNewLines(position);
         return true;
     }
 
@@ -143,10 +142,10 @@ public class TicTacToe
      *            Abscissa of the square in which the symbol has been placed
      */
     // TODO (fix) make this method more readable
-    private void findNewLines(int player, Position position)
+    private void findNewLines(Position position)
     {
         
-        findNewUpDownLines(player, position);
+        findNewUpDownLines(position);
 
         int numberOfSimilarSymbolsConnectedOnSameLine = 1;
         int numberofsymbolsbelow = 1;
@@ -253,7 +252,7 @@ public class TicTacToe
     /**
      * @param player
      */
-    private void findNewUpDownLines(int player, Position position)
+    private void findNewUpDownLines(Position position)
     {
         int numberOfSimilarSymbolsConnectedOnSameLine = 1;
         int numberofsymbolsbelow = 1;

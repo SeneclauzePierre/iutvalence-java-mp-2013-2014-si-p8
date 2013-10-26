@@ -14,15 +14,10 @@ package fr.iutvalence.java.mp.tictactoe;
 public class Square
 {
     /**
-     * EMPTY This constant means there is no symbol in a square
-     */
-    public final static int EMPTY = 0;
-
-    /**
      * value Is equal to one of the aforedefined constants ; determines the
      * symbol present in the square
      */
-    private int mark;
+    private Mark mark;
 
     /**
      * direction A table of 4 boolean Each boolean represents one of the
@@ -37,7 +32,7 @@ public class Square
      */
     public Square()
     {
-        this.mark = Square.EMPTY;
+        this.mark = Mark.EMPTY;
 
         this.linesInfo = new LinesInfo();
     }
@@ -47,9 +42,9 @@ public class Square
      * 
      * @return true if the value is EMPTY, false otherwise
      */
-    public boolean isEmpty()
+    public boolean isUnmarked()
     {
-        return (this.mark == Square.EMPTY);
+        return (this.mark == Mark.EMPTY);
     }
 
     /**
@@ -58,9 +53,11 @@ public class Square
      * @param value
      *            : the new value
      */
-    public void udpateMark(int value)
+    public void mark(Mark mark) throws AlreadyMarkedException
     {
-        this.mark = value;
+        if (!this.isUnmarked()) throw new AlreadyMarkedException();
+        
+        this.mark = mark;
     }
 
     /**
@@ -68,7 +65,7 @@ public class Square
      * 
      * @return : the square's value (duh!)
      */
-    public int getMark()
+    public Mark getMark()
     {
         return this.mark;
     }
