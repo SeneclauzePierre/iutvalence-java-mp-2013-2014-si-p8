@@ -38,9 +38,8 @@ public class Square
     public Square()
     {
         this.mark = Square.EMPTY;
-        
-        // TODO (fix) declare hard-coded values as constants
-       this.linesInfo = new LinesInfo();
+
+        this.linesInfo = new LinesInfo();
     }
 
     /**
@@ -50,7 +49,7 @@ public class Square
      */
     public boolean isEmpty()
     {
-      return (this.mark == Square.EMPTY);
+        return (this.mark == Square.EMPTY);
     }
 
     /**
@@ -69,7 +68,7 @@ public class Square
      * 
      * @return : the square's value (duh!)
      */
-    public int getValue()
+    public int getMark()
     {
         return this.mark;
     }
@@ -82,9 +81,9 @@ public class Square
      * @return true if the square is used in the direction dir, else it returns
      *         false
      */
-    public boolean seeLine(int dir)
+    public boolean isPartOfLineByDirection(Axis axis)
     {
-        return this.isPartOfLineByDirection[dir];
+        return this.linesInfo.isPartOfLineByAxis(axis);
     }
 
     /**
@@ -94,9 +93,8 @@ public class Square
      * @param dir
      *            Indicates the direction in which the line has been completed
      */
-    public void useLine(int dir)
+    public void setPartOfLineByDirection(Axis axis)
     {
-        this.isPartOfLineByDirection[dir] = true;
+        this.linesInfo.setIsPartOfLineByAxis(axis);
     }
-
 }

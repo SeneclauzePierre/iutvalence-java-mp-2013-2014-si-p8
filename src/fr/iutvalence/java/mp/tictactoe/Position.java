@@ -19,25 +19,25 @@ public class Position
 
     /**
      * Create a position with given coordinate
-     * @param x column(abscissa)'s position
-     * @param y line(ordinate)'s position
+     * @param column column(abscissa)'s position
+     * @param line line(ordinate)'s position
      */
-    public Position(int x, int y)
+    public Position(int column, int line)
     {
         super();
-        this.column = x;
-        this.line = y;
+        this.column = column;
+        this.line = line;
     }
     
     /**
      * Create a position with a translate of the current position
-     * @param x the column translate
-     * @param y the line translate
+     * @param delatColumn the column translate
+     * @param deltaLine the line translate
      * @return The new position
      */
-    public Position translate(int x, int y)
+    public Position translate(int delatColumn, int deltaLine)
     {
-        return new Position(this.column + x, this.line + y);
+        return new Position(this.column + delatColumn, this.line + deltaLine);
     }
 
     /**
