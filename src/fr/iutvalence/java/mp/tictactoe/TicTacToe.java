@@ -1,5 +1,8 @@
 package fr.iutvalence.java.mp.tictactoe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * TicTacToe
  * 
@@ -15,7 +18,6 @@ package fr.iutvalence.java.mp.tictactoe;
 public class TicTacToe
 {
 
-   
     /**
      * Number of marks that need to be aligned in order to score
      */
@@ -50,7 +52,7 @@ public class TicTacToe
     public TicTacToe()
     {
         this.grid = new Grid();
-        
+
         initPlayersScores();
     }
 
@@ -73,216 +75,169 @@ public class TicTacToe
      */
     public void play()
     {
-        boolean verif = false;
-
-        for (int turn = 0; turn < DEFAULT_NUMBER_OF_TURNS; turn++)
-        /*
-         * Victory or end of game conditions (to be modified)
-         */
+        for (int turn = 1; turn <= DEFAULT_NUMBER_OF_TURNS; turn++)
         {
-            for (int playerID = 0; playerID < DEFAULT_NUMBER_OF_PLAYERS; playerID++)
+            PlayerInfo playerInfo = PlayerInfo.getPlayerInfoForGivenTurn(turn);
+
+            while (true)
             {
-                while (true)
+                // TODO (next step) externalize player's choice retrieval, and do not depend on a specific behaviour (random, keyboard, ...)
+                int column = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
+                int line = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
+                Position position = new Position(column, line);
+
+                // TODO (next step) externalize in-game display, and do not depend on a specific behaviour (console, gui, ...)
+                System.out.println("Joueur " + playerInfo.getNumber() + " pose sa marque en " + position + " -- Tour : "
+                        + (turn + 1));
+
+                try
                 {
-                    int column = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
-                    int line = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
-                    
-                    Position position = new Position(column, line);
-                    if (this.computeTurn(playerID, position))
-                    {
-                        System.out.println("Joueur " + playerID + " a posé sa marque en "+position
-                                + " -- Tour : " + (turn + 1));
-                        break;
-                    }
-                    System.out.println("...mais est un gros boulet !");
+                    this.computeTurn(playerInfo.getMark(), position);
                 }
+                catch (InvalidPositionException e)
+                {
+                    System.out.println("... mais est un gros boulet !");
+                    continue;
+                }
+                break;
             }
         }
+
         for (int player = 0; player < DEFAULT_NUMBER_OF_PLAYERS; player++)
             System.out.println("Score Joueur " + player + " : " + this.playersScores[player]);
     }
 
     /**
-     * gameTurn Puts the player's symbol in the square located in (x,y)
+     * Plays a turn of the game, trying to put a given mark at a given position and searching (if
+     * it succeeds) if a new line has been scored
      * 
-     * @param player
-     *            The number of the player playing this turn
-     * @param abs
-     *            Ordinate of the square in which the player places his symbol
-     * @param ord
-     *            Abscissa of the square in which the player places his symbol
-     * @param position 
-     * @return A boolean stating if the symbol was successfully place
+     *      
+     * @param mark
+     *            the mark to place
+     * @param position the position where to put the mark
+     * @throws InvalidPositionException if the mark could not be put on the specified position 
+     * (because the position is out of bounds or already marked)
      */
-    private boolean computeTurn(Mark mark, Position position)
-    {        
+    private void computeTurn(Mark mark, Position position) throws InvalidPositionException
+    {
         try
         {
-           this.grid.getSquareAt(position).mark(mark);
+            this.grid.getSquareAt(position).mark(mark);
         }
-        // Here, catching Exception instead of catching PositionOutOfBounds and AlreadyMarkedException
-        // separately allows to simplify code because exception processing is the same in both cases
+        // Here, catching Exception instead of catching PositionOutOfBounds and
+        // AlreadyMarkedException
+        // separately allows to simplify code because exception processing is
+        // the same in both cases
         catch (Exception e)
         {
-         return false;
-        }        
-       
-        this.findNewLines(position);
-        return true;
+            throw new InvalidPositionException();
+        }
+
+        this.findAndMarkNewLine(position);
     }
 
     /**
-     * checkLine Checks if one or more lines are completed
+     * finding and marking (if it exists) a new line, according to a given position
      * 
-     * @param player
-     *            The number of the player who played this turn
-     * @param abs
-     *            Ordinate of the square in which the symbol has been placed
-     * @param ord
-     *            Abscissa of the square in which the symbol has been placed
+     * @param position a position, where a mark has been placed, and from which a new line may be scored
      */
-    // TODO (fix) make this method more readable
-    private void findNewLines(Position position)
+    private void findAndMarkNewLine(Position position)
     {
-        
-        findNewUpDownLines(position);
 
-        int numberOfSimilarSymbolsConnectedOnSameLine = 1;
-        int numberofsymbolsbelow = 1;
+        if (findAndMarkNewLineOnAxis(position, Axis.UP_DOWN))
+            return;
+        if (findAndMarkNewLineOnAxis(position, Axis.LEFT_RIGHT))
+            return;
+        if (findAndMarkNewLineOnAxis(position, Axis.UP_LEFT_DOWN_RIGHT))
+            return;
+        findAndMarkNewLineOnAxis(position, Axis.UP_RIGHT_DOWN_LEFT);
+    }
 
-        // Check LEFT_RIGHT --------
-        while ((abs - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
-                && this.grid[abs - numberOfSimilarSymbolsConnectedOnSameLine][ord].getMark() == this.grid[abs][ord].getMark()
-                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_PER_LINE
-                && !this.grid[abs - numberOfSimilarSymbolsConnectedOnSameLine][ord].seeLine(Square.LEFT_RIGHT))
+    /**
+     * finding and marking (if it exists) a new line, according to a given position and a given axis
+     * @param position a position, where a mark has been placed, and from which a new line may be scored
+     * @param axis the axis where to check if a new line has been scored
+     * @return true if a new line has been scored from the specified position and along the specified axis
+     */
+    private boolean findAndMarkNewLineOnAxis(Position position, Axis axis)
+    {
+        try
         {
-            numberOfSimilarSymbolsConnectedOnSameLine++;
-        }
-        while ((abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
-                && this.grid[abs + numberofsymbolsbelow][ord].getMark() == this.grid[abs][ord].getMark()
-                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_PER_LINE
-                && !this.grid[abs + numberofsymbolsbelow][ord].seeLine(Square.LEFT_RIGHT))
-        {
-            numberOfSimilarSymbolsConnectedOnSameLine++;
-            numberofsymbolsbelow++;
-        }
-        numberofsymbolsbelow--;
-        if (numberOfSimilarSymbolsConnectedOnSameLine == NUMBER_OF_MARKS_PER_LINE)
-        {
-            // TODO (FIXED) Add an attribute score and add one point here
-            System.out.println("-- Joueur " + player + " a complété une ligne en LEFT_RIGHT");
-            this.playersScores[player]++;
-            for (numberOfSimilarSymbolsConnectedOnSameLine = NUMBER_OF_MARKS_PER_LINE - 1; numberOfSimilarSymbolsConnectedOnSameLine >= 0; numberOfSimilarSymbolsConnectedOnSameLine--)
+            List<Square> unusedSimilarSquaresOnPrimaryDirection = this.getUnusedSimilarSquaresFromPositionByDirection(
+                    position, axis.getPrimaryDirection());
+            List<Square> unusedSimilarSquaresOnSecondaryDirection = this
+                    .getUnusedSimilarSquaresFromPositionByDirection(position, axis.getSecondaryDirection());
+
+            if (unusedSimilarSquaresOnPrimaryDirection.size() + unusedSimilarSquaresOnSecondaryDirection.size() + 1 >= NUMBER_OF_MARKS_PER_LINE)
             {
-                this.grid[abs + numberofsymbolsbelow - numberOfSimilarSymbolsConnectedOnSameLine][ord].useLine(Square.LEFT_RIGHT);
-            }
-        }
+                List<Square> squaresToMark = new ArrayList<Square>();
+                squaresToMark.add(this.grid.getSquareAt(position));
+                squaresToMark.addAll(unusedSimilarSquaresOnPrimaryDirection);
+                squaresToMark.addAll(unusedSimilarSquaresOnSecondaryDirection);
 
-        numberOfSimilarSymbolsConnectedOnSameLine = 1;
-        numberofsymbolsbelow = 1;
-        // Check UPLEFT_DOWNRIGHT -------
-        while ((ord - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
-                && (abs - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
-                && this.grid[abs - numberOfSimilarSymbolsConnectedOnSameLine][ord - numberOfSimilarSymbolsConnectedOnSameLine].getMark() == this.grid[abs][ord]
-                        .getMark()
-                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_PER_LINE
-                && !this.grid[abs - numberOfSimilarSymbolsConnectedOnSameLine][ord - numberOfSimilarSymbolsConnectedOnSameLine]
-                        .seeLine(Square.UPLEFT_DOWNRIGHT))
-        {
-            numberOfSimilarSymbolsConnectedOnSameLine++;
-        }
-        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
-                && (abs + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
-                && this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].getMark() == this.grid[abs][ord]
-                        .getMark() && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_PER_LINE
-                && !this.grid[abs + numberofsymbolsbelow][ord + numberofsymbolsbelow].seeLine(Square.UPLEFT_DOWNRIGHT))
-        {
-            numberOfSimilarSymbolsConnectedOnSameLine++;
-            numberofsymbolsbelow++;
-        }
-        numberofsymbolsbelow--;
-        if (numberOfSimilarSymbolsConnectedOnSameLine == NUMBER_OF_MARKS_PER_LINE)
-        {
-            // TODO (FIXED) Add an attribute score and add one point here
-            System.out.println("-- Joueur " + player + " a complété une ligne en UPLEFT_DOWNRIGHT");
-            this.playersScores[player]++;
-            for (numberOfSimilarSymbolsConnectedOnSameLine = NUMBER_OF_MARKS_PER_LINE - 1; numberOfSimilarSymbolsConnectedOnSameLine >= 0; numberOfSimilarSymbolsConnectedOnSameLine--)
-            {
-                this.grid[abs + numberofsymbolsbelow - numberOfSimilarSymbolsConnectedOnSameLine][ord + numberofsymbolsbelow
-                        - numberOfSimilarSymbolsConnectedOnSameLine].useLine(Square.UPLEFT_DOWNRIGHT);
-            }
-        }
+                for (int squareNumber = 1; squareNumber <= NUMBER_OF_MARKS_PER_LINE; squareNumber++)
+                    squaresToMark.get(squareNumber - 1).setPartOfLineByAxis(axis);
 
-        numberOfSimilarSymbolsConnectedOnSameLine = 1;
-        numberofsymbolsbelow = 1;
-        // Check UPRIGHT_DOWNLEFT -------
-        while ((ord - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
-                && (abs + numberOfSimilarSymbolsConnectedOnSameLine) < DEFAULT_GRID_SIZE
-                && this.grid[abs + numberOfSimilarSymbolsConnectedOnSameLine][ord - numberOfSimilarSymbolsConnectedOnSameLine].getMark() == this.grid[abs][ord]
-                        .getMark()
-                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_PER_LINE
-                && !this.grid[abs + numberOfSimilarSymbolsConnectedOnSameLine][ord - numberOfSimilarSymbolsConnectedOnSameLine]
-                        .seeLine(Square.UPRIGHT_DOWNLEFT))
-        {
-            numberOfSimilarSymbolsConnectedOnSameLine++;
-        }
-        while ((ord + numberofsymbolsbelow) < DEFAULT_GRID_SIZE
-                && (abs - numberofsymbolsbelow) >= 0
-                && this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].getMark() == this.grid[abs][ord]
-                        .getMark() && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_PER_LINE
-                && !this.grid[abs - numberofsymbolsbelow][ord + numberofsymbolsbelow].seeLine(Square.UPRIGHT_DOWNLEFT))
-        {
-            numberOfSimilarSymbolsConnectedOnSameLine++;
-            numberofsymbolsbelow++;
-        }
-        numberofsymbolsbelow--;
-        if (numberOfSimilarSymbolsConnectedOnSameLine == NUMBER_OF_MARKS_PER_LINE)
-        {
-            // TODO (FIXED) Add an attribute score and add one point here
-            System.out.println("-- Joueur " + player + " a complété une ligne en UPRIGHT_DOWNLEFT");
-            this.playersScores[player]++;
-            for (numberOfSimilarSymbolsConnectedOnSameLine = NUMBER_OF_MARKS_PER_LINE - 1; numberOfSimilarSymbolsConnectedOnSameLine >= 0; numberOfSimilarSymbolsConnectedOnSameLine--)
-            {
-                this.grid[abs - numberofsymbolsbelow + numberOfSimilarSymbolsConnectedOnSameLine][ord + numberofsymbolsbelow
-                        - numberOfSimilarSymbolsConnectedOnSameLine].useLine(Square.UPRIGHT_DOWNLEFT);
+                return true;
             }
+            return false;
+
+        }
+        catch (InvalidPositionException e)
+        {
+            return false;
         }
     }
 
     /**
-     * @param player
+     * Returns the list of neighbour squares that share the same mark as the one of a given position, and that can be aligned 
+     * with this position according to a given direction
+     * @param position the position from where to start searching
+     * @param direction the direction along which searching
+     * @return the the list of neighbour squares that share the same mark as the one being at the given position, 
+     * and that can be aligned with this one according to the given direction
+     * @throws InvalidPositionException if the starting position is invalid (no mark or out of bounds)
      */
-    private void findNewUpDownLines(Position position)
+    private List<Square> getUnusedSimilarSquaresFromPositionByDirection(Position position, Direction direction)
+            throws InvalidPositionException
     {
-        int numberOfSimilarSymbolsConnectedOnSameLine = 1;
-        int numberofsymbolsbelow = 1;
-        // Check UP_DOWN --------
-        while ((position.getLine() - numberOfSimilarSymbolsConnectedOnSameLine) >= 0
-                && this.grid.getSquareAt(position.translate(0,(-numberOfSimilarSymbolsConnectedOnSameLine))).getMark() == this.grid.getSquareAt(position).getMark()
-                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_PER_LINE
-                && !this.grid.getSquareAt(position.translate(0,(-numberOfSimilarSymbolsConnectedOnSameLine))).seeLine(Square.UP_DOWN))
+        List<Square> result = new ArrayList<Square>();
+
+        Square squareMarked = null;
+        try
         {
-            numberOfSimilarSymbolsConnectedOnSameLine++;
+            squareMarked = this.grid.getSquareAt(position);
+            if (squareMarked.isUnmarked())
+                throw new InvalidPositionException();
         }
-        while ((position.getLine() + numberofsymbolsbelow) < grid.DEFAULT_GRID_SIZE
-                && this.grid.getSquareAt(position.translate(0,numberOfSimilarSymbolsConnectedOnSameLine)).getMark() == this.grid.getSquareAt(position).getMark()
-                && numberOfSimilarSymbolsConnectedOnSameLine < NUMBER_OF_MARKS_PER_LINE
-                && !this.grid.getSquareAt(position.translate(0,numberOfSimilarSymbolsConnectedOnSameLine)).seeLine(Square.UP_DOWN))
+        catch (PositionOutOfBoundsException e)
         {
-            numberOfSimilarSymbolsConnectedOnSameLine++;
-            numberofsymbolsbelow++;
+            throw new InvalidPositionException();
         }
-        numberofsymbolsbelow--;
-        if (numberOfSimilarSymbolsConnectedOnSameLine == NUMBER_OF_MARKS_PER_LINE)
+
+        Mark mark = squareMarked.getMark();
+
+        Position origin = position;
+        while (true)
         {
-            // TODO (FIXED) Add an attribute score and add one point here
-            System.out.println("-- Joueur " + player + " a complété une ligne en UP_DOWN");
-            this.playersScores[player]++;
-            for (numberOfSimilarSymbolsConnectedOnSameLine = NUMBER_OF_MARKS_PER_LINE - 1; numberOfSimilarSymbolsConnectedOnSameLine >= 0; numberOfSimilarSymbolsConnectedOnSameLine--)
+            Position nextNeighbour = null;
+            try
             {
-                this.grid.getSquareAt(position.translate(0, numberofsymbolsbelow - numberOfSimilarSymbolsConnectedOnSameLine)).seeLine(Square.UP_DOWN);
+                nextNeighbour = this.grid.getNeighbourPosition(origin, direction);
+                Square neighbourSquare = this.grid.getSquareAt(nextNeighbour);
+                if (neighbourSquare.getMark() != mark)
+                    break;
+                if (neighbourSquare.isPartOfLineByDirection(direction.getAxis()))
+                    break;
+                result.add(neighbourSquare);
+                origin = nextNeighbour;
+            }
+            catch (PositionOutOfBoundsException e)
+            {
+                break;
             }
         }
+        return result;
     }
 
 }
