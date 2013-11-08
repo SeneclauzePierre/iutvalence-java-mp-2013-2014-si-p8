@@ -34,6 +34,10 @@ public class TicTacToe
      * The default number of players
      */
     public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
+    
+    private final static PlayersChoice INPUT = new PlayersChoice();
+    
+    private final static Display OUTPUT = new Display();
 
     
     private Grid grid;
@@ -81,14 +85,12 @@ public class TicTacToe
 
             while (true)
             {
-                // TODO (next step) externalize player's choice retrieval, and do not depend on a specific behaviour (random, keyboard, ...)
-                int column = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
-                int line = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
-                Position position = new Position(column, line);
+                // TODO (DONE) externalize player's choice retrieval, and do not depend on a specific behaviour (random, keyboard, ...)
+                
+                Position position = INPUT.inputPlayersChoice();
 
-                // TODO (next step) externalize in-game display, and do not depend on a specific behaviour (console, gui, ...)
-                System.out.println("Joueur " + playerInfo.getNumber() + " pose sa marque en " + position + " -- Tour : "
-                        + turn);
+                // TODO (DONE) externalize in-game display, and do not depend on a specific behaviour (console, gui, ...)
+                OUTPUT.displayMarking(playerInfo,position,turn);
 
                 try
                 {
@@ -96,15 +98,14 @@ public class TicTacToe
                 }
                 catch (InvalidPositionException e)
                 {
-                    System.out.println("... mais est un gros boulet !");
+                    OUTPUT.markHasNotBeenPlacedDueToAnException();
                     continue;
                 }
                 break;
             }
         }
-
-        for (int player = 0; player < DEFAULT_NUMBER_OF_PLAYERS; player++)
-            System.out.println("Score Joueur " + player + " : " + this.playersScores[player]);
+        OUTPUT.displayScore(this.playersScores);
+        
     }
 
     /**
