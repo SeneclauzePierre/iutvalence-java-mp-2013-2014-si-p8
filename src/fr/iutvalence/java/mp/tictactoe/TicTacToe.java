@@ -27,7 +27,7 @@ public class TicTacToe
      * 
      * The default duration of the game in number of turns
      */
-    public final static int DEFAULT_NUMBER_OF_TURNS = 100;
+    public final static int DEFAULT_NUMBER_OF_TURNS = 200;
 
     /**
      * 
@@ -88,11 +88,11 @@ public class TicTacToe
 
                 // TODO (next step) externalize in-game display, and do not depend on a specific behaviour (console, gui, ...)
                 System.out.println("Joueur " + playerInfo.getNumber() + " pose sa marque en " + position + " -- Tour : "
-                        + (turn + 1));
+                        + turn);
 
                 try
                 {
-                    this.computeTurn(playerInfo.getMark(), position);
+                    this.placeMarkAt(playerInfo.getMark(), position);
                 }
                 catch (InvalidPositionException e)
                 {
@@ -118,7 +118,7 @@ public class TicTacToe
      * @throws InvalidPositionException if the mark could not be put on the specified position 
      * (because the position is out of bounds or already marked)
      */
-    private void computeTurn(Mark mark, Position position) throws InvalidPositionException
+    private void placeMarkAt(Mark mark, Position position) throws InvalidPositionException
     {
         try
         {
@@ -133,33 +133,34 @@ public class TicTacToe
             throw new InvalidPositionException();
         }
 
-        this.findAndMarkNewLine(position);
+        this.findAndValidateNewLine(position, mark);
     }
 
     /**
-     * finding and marking (if it exists) a new line, according to a given position
+     * finding and validating (if it exists) a new line, according to a given position
      * 
      * @param position a position, where a mark has been placed, and from which a new line may be scored
+     * @param mark identifies who's playing
      */
-    private void findAndMarkNewLine(Position position)
+    private void findAndValidateNewLine(Position position, Mark mark)
     {
-
-        if (findAndMarkNewLineOnAxis(position, Axis.UP_DOWN))
-            return;
-        if (findAndMarkNewLineOnAxis(position, Axis.LEFT_RIGHT))
-            return;
-        if (findAndMarkNewLineOnAxis(position, Axis.UP_LEFT_DOWN_RIGHT))
-            return;
-        findAndMarkNewLineOnAxis(position, Axis.UP_RIGHT_DOWN_LEFT);
+       for (Axis axis: Axis.values())
+           if (findAndValidateNewLineOnAxis(position, axis)) 
+           {
+               if (mark == Mark.PLAYER1)
+                   this.playersScores[0]++;
+               else
+                   this.playersScores[1]++;
+           }
     }
 
     /**
-     * finding and marking (if it exists) a new line, according to a given position and a given axis
+     * finding and validating (if it exists) a new line, according to a given position and a given axis
      * @param position a position, where a mark has been placed, and from which a new line may be scored
      * @param axis the axis where to check if a new line has been scored
      * @return true if a new line has been scored from the specified position and along the specified axis
      */
-    private boolean findAndMarkNewLineOnAxis(Position position, Axis axis)
+    private boolean findAndValidateNewLineOnAxis(Position position, Axis axis)
     {
         try
         {
