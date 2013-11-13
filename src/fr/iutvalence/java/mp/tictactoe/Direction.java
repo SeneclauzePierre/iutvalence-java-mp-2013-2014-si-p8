@@ -2,8 +2,10 @@ package fr.iutvalence.java.mp.tictactoe;
 
 public enum Direction
 {
+    // TODO (fix) write comment
     UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT;
 
+    // TODO (fix) write comment
     public Axis getAxis()
     {
         switch (this)

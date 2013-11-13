@@ -35,11 +35,16 @@ public class TicTacToe
      */
     public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
     
-    private final static PlayersChoice INPUT = new PlayersChoice();
-    
+    // TODO (fix) write comment
+    // TODO (fix) fix field declaration
+    private final static Player INPUT = new Player();
+
+    // TODO (fix) write comment
+    // TODO (fix) fix field declaration
+
     private final static Display OUTPUT = new Display();
 
-    
+    // TODO (fix) write comment
     private Grid grid;
 
     /**
@@ -85,11 +90,8 @@ public class TicTacToe
 
             while (true)
             {
-                // TODO (DONE) externalize player's choice retrieval, and do not depend on a specific behaviour (random, keyboard, ...)
-                
-                Position position = INPUT.inputPlayersChoice();
+                Position position = INPUT.getChoice();
 
-                // TODO (DONE) externalize in-game display, and do not depend on a specific behaviour (console, gui, ...)
                 OUTPUT.displayMarking(playerInfo,position,turn);
 
                 try

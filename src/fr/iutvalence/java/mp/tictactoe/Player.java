@@ -1,8 +1,10 @@
 package fr.iutvalence.java.mp.tictactoe;
 
-public class PlayersChoice
+//TODO (fix) write comment
+public class Player
 {
-    public Position inputPlayersChoice()
+    // TODO (fix) write comment
+    public Position getChoice()
     {
         int column = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
         int line = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());

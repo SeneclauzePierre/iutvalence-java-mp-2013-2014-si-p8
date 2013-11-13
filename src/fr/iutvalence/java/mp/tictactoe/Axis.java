@@ -23,6 +23,7 @@ public enum Axis
      */
     UP_LEFT_DOWN_RIGHT;
 
+    // TODO (fix) write comment
     public Direction getPrimaryDirection()
     {
         switch (this)
@@ -38,6 +39,7 @@ public enum Axis
         }
     }
 
+    // TODO (fix) write comment
     public Direction getSecondaryDirection()
     {
         switch (this)

@@ -34,6 +34,7 @@ public class Grid
         }
     }
 
+    // TODO (fix) write comment
     private boolean isPositionInBounds(Position position)
     {
         return  !((position.getColumn() >= DEFAULT_GRID_SIZE || position.getColumn() < 0 
@@ -52,11 +53,13 @@ public class Grid
         return this.grid[position.getColumn()][position.getLine()];
     }
     
+    // TODO (fix) rewrite comment
     /**
      * Create a position with a translate of the current position
-     * @param delatColumn the column translate
-     * @param deltaLine the line translate
+     * @param origin 
+     * @param direction    
      * @return The new position
+     * @throws PositionOutOfBoundsException 
      */
     public Position getNeighbourPosition(Position origin, Direction direction) throws PositionOutOfBoundsException
     {
@@ -85,7 +88,8 @@ public class Grid
         case DOWN_LEFT : 
             result = origin.translate(-1, 1);
             break;
-        default: /*DOWN_RIGHT*/  
+        case DOWN_RIGHT : 
+        default:  
             result = origin.translate(1, 1);        
         }
         if (!this.isPositionInBounds(result)) throw new PositionOutOfBoundsException();

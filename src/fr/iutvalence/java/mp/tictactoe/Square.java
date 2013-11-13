@@ -47,12 +47,7 @@ public class Square
         return (this.mark == Mark.EMPTY);
     }
 
-    /**
-     * newValue Changes the square's value
-     * 
-     * @param value
-     *            : the new value
-     */
+    // TODO (fix) write comment
     public void mark(Mark mark) throws AlreadyMarkedException
     {
         if (!this.isUnmarked()) throw new AlreadyMarkedException();
@@ -70,6 +65,7 @@ public class Square
         return this.mark;
     }
 
+    // TODO (fix) rewrite comment
     /**
      * seeLine Checks if a square is used in the "dir" direction
      * 
@@ -83,6 +79,7 @@ public class Square
         return this.linesInfo.isPartOfLineByAxis(axis);
     }
 
+    // TODO (fix) rewrite comment
     /**
      * useLine States that a square is used to complete a line in the "dir"
      * direction
