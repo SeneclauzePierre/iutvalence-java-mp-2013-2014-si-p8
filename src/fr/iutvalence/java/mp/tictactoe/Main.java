@@ -1,7 +1,7 @@
 package fr.iutvalence.java.mp.tictactoe;
 
 /**
- * This is the main class, that contains the method that's excuted when the
+ * This is the main class, that contains the method that's executed when the
  * program is executed.
  * 
  * @author seneclap
@@ -10,13 +10,15 @@ public class Main
 {
 
     /**
-     * This is the method that's excuted when the program is executed.
+     * This is the method that's executed when the program is executed.
      * 
      * @param args
      *            No parameters
      */
     public static void main(String[] args)
     {
-        new TicTacToe().play();
+        Player player = new Player();
+        Display display = new Display();
+        new TicTacToe(player,display).play();
     }
 }

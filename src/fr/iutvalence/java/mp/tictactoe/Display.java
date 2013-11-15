@@ -36,4 +36,6 @@ public class Display
         for (int player = 0; player < TicTacToe.DEFAULT_NUMBER_OF_PLAYERS; player++)
             System.out.println("Score Joueur " + (player+1) + " : " + playersScores[player]);
     }
+    
+    
 }

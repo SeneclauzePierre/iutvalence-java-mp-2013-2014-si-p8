@@ -39,14 +39,14 @@ public class TicTacToe
     /**
      * The player's choice at a certain moment
      */
-    private final Player INPUT = new Player();
+    private Player INPUT;
 
     // TODO (FIXED) write comment
     // TODO (FIXED) fix field declaration
     /**
      * Represents what that the players can see on the screen
      */
-    private final Display OUTPUT = new Display();
+    private Display OUTPUT;
 
     // TODO (FIXED) write comment
     /**
@@ -62,13 +62,16 @@ public class TicTacToe
     /**
      * 
      * Creates a new TicTacToe game, with a grid whose size is
-     * <tt>DEFAULT_GRID_SIZE</tt>*
+     * <tt>DEFAULT_GRID_SIZE</tt>
+     * @param player the input interface
+     * @param display the output interface
      * 
      */
-    public TicTacToe()
+    public TicTacToe(Player player,Display display)
     {
         this.grid = new Grid();
-
+        this.OUTPUT = display;
+        this.INPUT = player;
         initPlayersScores();
     }
 
