@@ -1,11 +1,50 @@
 package fr.iutvalence.java.mp.tictactoe;
 
+/**
+ * Enumerates all different directions
+ *
+ */
 public enum Direction
 {
-    // TODO (fix) write comment
-    UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT;
+    // TODO (FIXED) write comment
+    /**
+     * Represents the upward direction
+     */
+    UP, 
+    /**
+     * Represents the downward direction
+     */
+    DOWN, 
+    /**
+     * Represents the left direction
+     */
+    LEFT,
+    /**
+     * Represents the right direction
+     */
+    RIGHT, 
+    /**
+     * Represents the diagonal up-left direction
+     */
+    UP_LEFT, 
+    /**
+     * Represents the diagonal up-right direction
+     */
+    UP_RIGHT, 
+    /**
+     * Represents the diagonal down-left direction
+     */
+    DOWN_LEFT, 
+    /**
+     * Represents the diagonal down-right direction
+     */
+    DOWN_RIGHT;
 
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Returns the axis that corresponds to each direction 
+     * @return said axis
+     */
     public Axis getAxis()
     {
         switch (this)

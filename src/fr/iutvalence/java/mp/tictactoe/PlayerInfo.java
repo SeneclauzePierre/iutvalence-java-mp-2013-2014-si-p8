@@ -1,21 +1,42 @@
 package fr.iutvalence.java.mp.tictactoe;
 
-// TODO (fix) write comment
+// TODO (FIXED) write comment
+/**
+ * This class identifies both of the game's players
+ *
+ */
 public class PlayerInfo
 {
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Generates the first player
+     */
     private final static PlayerInfo PLAYER_1 = new PlayerInfo(1, Mark.PLAYER1);
     
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Generates the second player
+     */
     private final static PlayerInfo PLAYER_2 = new PlayerInfo(2, Mark.PLAYER2);
     
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * The player's number
+     */
     private final int number;
     
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * The player's mark
+     */
     private final Mark mark;
 
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Generates a new player
+     * @param number the new player's number
+     * @param mark the new player's mark
+     */
     private PlayerInfo(int number, Mark mark)
     {
         super();
@@ -23,19 +44,32 @@ public class PlayerInfo
         this.mark = mark;
     }
 
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Returns the player's number
+     * @return said number
+     */
     public int getNumber()
     {
-        return number;
+        return this.number;
     }
 
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Returns the player's mark
+     * @return said mark
+     */
     public Mark getMark()
     {
-        return mark;
+        return this.mark;
     }
     
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Gets the info of the player that's playing during the current turn
+     * @param turn said turn
+     * @return the player's playing this turn
+     */
     public static PlayerInfo getPlayerInfoForGivenTurn(int turn)
     {
         if (turn % 2 == 1) return PLAYER_1;

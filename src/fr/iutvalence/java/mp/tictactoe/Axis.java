@@ -23,7 +23,11 @@ public enum Axis
      */
     UP_LEFT_DOWN_RIGHT;
 
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Returns the first direction checked depending on the axis checked 
+     * @return said direction
+     */
     public Direction getPrimaryDirection()
     {
         switch (this)
@@ -39,7 +43,11 @@ public enum Axis
         }
     }
 
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Returns the second direction checked depending on the axis checked
+     * @return said direction
+     */
     public Direction getSecondaryDirection()
     {
         switch (this)

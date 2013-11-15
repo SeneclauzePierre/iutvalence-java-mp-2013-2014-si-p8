@@ -34,7 +34,12 @@ public class Grid
         }
     }
 
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * Checks if a certain position is inside the grid's bounds
+     * @param position the position checked
+     * @return true if the position is inside the bounds, false if not
+     */
     private boolean isPositionInBounds(Position position)
     {
         return  !((position.getColumn() >= DEFAULT_GRID_SIZE || position.getColumn() < 0 
@@ -53,13 +58,13 @@ public class Grid
         return this.grid[position.getColumn()][position.getLine()];
     }
     
-    // TODO (fix) rewrite comment
+    // TODO (FIXED) rewrite comment
     /**
      * Create a position with a translate of the current position
-     * @param origin 
-     * @param direction    
+     * @param origin the current position
+     * @param direction the direction in which the position is translated
      * @return The new position
-     * @throws PositionOutOfBoundsException 
+     * @throws PositionOutOfBoundsException if the new position is out of the grid's bounds
      */
     public Position getNeighbourPosition(Position origin, Direction direction) throws PositionOutOfBoundsException
     {

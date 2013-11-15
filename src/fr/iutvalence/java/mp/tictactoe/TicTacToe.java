@@ -30,21 +30,28 @@ public class TicTacToe
     public final static int DEFAULT_NUMBER_OF_TURNS = 200;
 
     /**
-     * 
      * The default number of players
      */
     public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
     
-    // TODO (fix) write comment
-    // TODO (fix) fix field declaration
-    private final static Player INPUT = new Player();
+    // TODO (FIXED) write comment
+    // TODO (FIXED) fix field declaration
+    /**
+     * The player's choice at a certain moment
+     */
+    private final Player INPUT = new Player();
 
-    // TODO (fix) write comment
-    // TODO (fix) fix field declaration
+    // TODO (FIXED) write comment
+    // TODO (FIXED) fix field declaration
+    /**
+     * Represents what that the players can see on the screen
+     */
+    private final Display OUTPUT = new Display();
 
-    private final static Display OUTPUT = new Display();
-
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
+    /**
+     * The grid in which the game takes place
+     */
     private Grid grid;
 
     /**
@@ -90,9 +97,9 @@ public class TicTacToe
 
             while (true)
             {
-                Position position = INPUT.getChoice();
+                Position position = this.INPUT.getChoice();
 
-                OUTPUT.displayMarking(playerInfo,position,turn);
+                this.OUTPUT.displayMarking(playerInfo,position,turn);
 
                 try
                 {
@@ -100,13 +107,13 @@ public class TicTacToe
                 }
                 catch (InvalidPositionException e)
                 {
-                    OUTPUT.markHasNotBeenPlacedDueToAnException();
+                    this.OUTPUT.markHasNotBeenPlacedDueToAnException();
                     continue;
                 }
                 break;
             }
         }
-        OUTPUT.displayScore(this.playersScores);
+        this.OUTPUT.displayScore(this.playersScores);
         
     }
 

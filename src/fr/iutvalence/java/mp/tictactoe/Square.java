@@ -48,6 +48,11 @@ public class Square
     }
 
     // TODO (fix) write comment
+    /**
+     * Puts the mark of the player's who played in the square inside of it
+     * @param mark said mark
+     * @throws AlreadyMarkedException if the square is already marked
+     */
     public void mark(Mark mark) throws AlreadyMarkedException
     {
         if (!this.isUnmarked()) throw new AlreadyMarkedException();
@@ -65,27 +70,21 @@ public class Square
         return this.mark;
     }
 
-    // TODO (fix) rewrite comment
+    // TODO (FIXED) rewrite comment
     /**
-     * seeLine Checks if a square is used in the "dir" direction
-     * 
-     * @param dir
-     *            : The checked direction
-     * @return true if the square is used in the direction dir, else it returns
-     *         false
+     * Checks if a square is used to complete a line in the "axis" axis
+     * @param axis the checked axis
+     * @return true if the square completes a line in the "axis" axis, else false
      */
     public boolean isPartOfLineByDirection(Axis axis)
     {
         return this.linesInfo.isPartOfLineByAxis(axis);
     }
 
-    // TODO (fix) rewrite comment
+    // TODO (FIXED) rewrite comment
     /**
-     * useLine States that a square is used to complete a line in the "dir"
-     * direction
-     * 
-     * @param dir
-     *            Indicates the direction in which the line has been completed
+     * States that a square is used to complete a line in the "axis" axis
+     * @param axis said axis
      */
     public void setPartOfLineByAxis(Axis axis)
     {
