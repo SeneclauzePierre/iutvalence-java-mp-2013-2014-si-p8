@@ -1,37 +1,32 @@
 package fr.iutvalence.java.mp.tictactoe;
 
-// TODO (FIXED) write comment
 /**
  * This class identifies both of the game's players
  *
  */
+// TODO (fix) try rewriting this as an enum (with fields)
 public class PlayerInfo
 {
-    // TODO (FIXED) write comment
     /**
      * Generates the first player
      */
     private final static PlayerInfo PLAYER_1 = new PlayerInfo(1, Mark.PLAYER1);
     
-    // TODO (FIXED) write comment
     /**
      * Generates the second player
      */
     private final static PlayerInfo PLAYER_2 = new PlayerInfo(2, Mark.PLAYER2);
     
-    // TODO (FIXED) write comment
     /**
      * The player's number
      */
     private final int number;
     
-    // TODO (FIXED) write comment
     /**
      * The player's mark
      */
     private final Mark mark;
 
-    // TODO (FIXED) write comment
     /**
      * Generates a new player
      * @param number the new player's number
@@ -44,7 +39,6 @@ public class PlayerInfo
         this.mark = mark;
     }
 
-    // TODO (FIXED) write comment
     /**
      * Returns the player's number
      * @return said number
@@ -54,7 +48,6 @@ public class PlayerInfo
         return this.number;
     }
 
-    // TODO (FIXED) write comment
     /**
      * Returns the player's mark
      * @return said mark
@@ -64,7 +57,6 @@ public class PlayerInfo
         return this.mark;
     }
     
-    // TODO (FIXED) write comment
     /**
      * Gets the info of the player that's playing during the current turn
      * @param turn said turn

@@ -6,7 +6,6 @@ package fr.iutvalence.java.mp.tictactoe;
  */
 public enum Direction
 {
-    // TODO (FIXED) write comment
     /**
      * Represents the upward direction
      */
@@ -40,7 +39,6 @@ public enum Direction
      */
     DOWN_RIGHT;
 
-    // TODO (FIXED) write comment
     /**
      * Returns the axis that corresponds to each direction 
      * @return said axis

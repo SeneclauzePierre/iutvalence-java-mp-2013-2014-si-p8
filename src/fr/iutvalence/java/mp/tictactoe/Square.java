@@ -47,7 +47,6 @@ public class Square
         return (this.mark == Mark.EMPTY);
     }
 
-    // TODO (fix) write comment
     /**
      * Puts the mark of the player's who played in the square inside of it
      * @param mark said mark
@@ -70,7 +69,6 @@ public class Square
         return this.mark;
     }
 
-    // TODO (FIXED) rewrite comment
     /**
      * Checks if a square is used to complete a line in the "axis" axis
      * @param axis the checked axis
@@ -81,7 +79,6 @@ public class Square
         return this.linesInfo.isPartOfLineByAxis(axis);
     }
 
-    // TODO (FIXED) rewrite comment
     /**
      * States that a square is used to complete a line in the "axis" axis
      * @param axis said axis

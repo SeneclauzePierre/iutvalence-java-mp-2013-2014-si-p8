@@ -1,16 +1,14 @@
 package fr.iutvalence.java.mp.tictactoe;
 
-//TODO (FIXED) write comment
 /**
  * This class represents the actions of the game's players
  *
  */
 public class Player
 {
-    // TODO (FIXED) write comment
     /**
      * Gets the position in which the player has decided to put his mark
-     * @return said position
+     * @return the position in which the player has decided to put his mark
      */
     public Position getChoice()
     {

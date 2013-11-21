@@ -17,6 +17,7 @@ public class Grid
      */
     public final Square[][] grid;
 
+    // TODO (fix) detail comment (how is the grid?)
     /**
      * generate a grid of a new game
      */
@@ -34,7 +35,6 @@ public class Grid
         }
     }
 
-    // TODO (FIXED) write comment
     /**
      * Checks if a certain position is inside the grid's bounds
      * @param position the position checked
@@ -58,9 +58,8 @@ public class Grid
         return this.grid[position.getColumn()][position.getLine()];
     }
     
-    // TODO (FIXED) rewrite comment
     /**
-     * Create a position with a translate of the current position
+     * Create a position by translating of the current position
      * @param origin the current position
      * @param direction the direction in which the position is translated
      * @return The new position

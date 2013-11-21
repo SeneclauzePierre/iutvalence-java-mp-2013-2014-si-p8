@@ -34,21 +34,18 @@ public class TicTacToe
      */
     public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
     
-    // TODO (FIXED) write comment
-    // TODO (FIXED) fix field declaration
+    // TODO comply with naming conventions
     /**
      * The player's choice at a certain moment
      */
     private Player INPUT;
 
-    // TODO (FIXED) write comment
-    // TODO (FIXED) fix field declaration
+    // TODO comply with naming conventions
     /**
      * Represents what that the players can see on the screen
      */
     private Display OUTPUT;
 
-    // TODO (FIXED) write comment
     /**
      * The grid in which the game takes place
      */
@@ -75,6 +72,7 @@ public class TicTacToe
         initPlayersScores();
     }
 
+    // TODO (fix) write comment
     /**
      * 
      */
