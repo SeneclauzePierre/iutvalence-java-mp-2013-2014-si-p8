@@ -4,18 +4,18 @@ package fr.iutvalence.java.mp.tictactoe;
  * This class identifies both of the game's players
  *
  */
-// TODO (fix) try rewriting this as an enum (with fields)
-public class PlayerInfo
+// TODO (FIXED) try rewriting this as an enum (with fields)
+public enum PlayerInfo
 {
     /**
      * Generates the first player
      */
-    private final static PlayerInfo PLAYER_1 = new PlayerInfo(1, Mark.PLAYER1);
+    PLAYER_1 (1, Mark.PLAYER1),
     
     /**
      * Generates the second player
      */
-    private final static PlayerInfo PLAYER_2 = new PlayerInfo(2, Mark.PLAYER2);
+    PLAYER_2 (2, Mark.PLAYER2);
     
     /**
      * The player's number
@@ -34,7 +34,6 @@ public class PlayerInfo
      */
     private PlayerInfo(int number, Mark mark)
     {
-        super();
         this.number = number;
         this.mark = mark;
     }
