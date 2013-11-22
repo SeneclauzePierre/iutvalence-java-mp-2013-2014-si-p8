@@ -61,11 +61,27 @@ public class TicTacToe
      * 
      * Creates a new TicTacToe game, with a grid whose size is
      * <tt>DEFAULT_GRID_SIZE</tt>
-     * @param player the input interface
+     * @param player the input interface (random choices)
      * @param display the output interface
      * 
      */
     public TicTacToe(RandomPlayer player,Display display)
+    {
+        this.grid = new Grid();
+        this.display = display;
+        this.player = player;
+        initPlayersScores();
+    }
+
+    /**
+     * 
+     * Creates a new TicTacToe game, with a grid whose size is
+     * <tt>DEFAULT_GRID_SIZE</tt>
+     * @param player the input interface
+     * @param display the output interface
+     * 
+     */
+    public TicTacToe(ConsolePlayer player, Display display)
     {
         this.grid = new Grid();
         this.display = display;
