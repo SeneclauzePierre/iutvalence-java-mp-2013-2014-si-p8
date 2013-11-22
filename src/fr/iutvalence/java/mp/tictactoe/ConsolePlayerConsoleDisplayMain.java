@@ -6,7 +6,7 @@ package fr.iutvalence.java.mp.tictactoe;
  * 
  * @author seneclap
  */
-public class Main
+public class ConsolePlayerConsoleDisplayMain
 {
 
     /**
@@ -17,8 +17,8 @@ public class Main
      */
     public static void main(String[] args)
     {
-        Player player = new Player();
-        Display display = new Display();
+        ConsolePlayer player = new ConsolePlayer();
+        Display display = new ConsoleDisplay();
         new TicTacToe(player,display).play();
     }
 }

@@ -38,13 +38,13 @@ public class TicTacToe
     /**
      * The player's choice at a certain moment
      */
-    private Player input;
+    private Player player;
 
     // TODO (FIXED) comply with naming conventions
     /**
      * Represents what that the players can see on the screen
      */
-    private Display output;
+    private Display display;
 
     /**
      * The grid in which the game takes place
@@ -65,11 +65,11 @@ public class TicTacToe
      * @param display the output interface
      * 
      */
-    public TicTacToe(Player player,Display display)
+    public TicTacToe(RandomPlayer player,Display display)
     {
         this.grid = new Grid();
-        this.output = display;
-        this.input = player;
+        this.display = display;
+        this.player = player;
         initPlayersScores();
     }
 
@@ -99,9 +99,9 @@ public class TicTacToe
 
             while (true)
             {
-                Position position = this.input.getChoice();
+                Position position = this.player.getChoice();
 
-                this.output.displayMarking(playerInfo,position,turn);
+                this.display.displayConsole(playerInfo,position,turn);
 
                 try
                 {
@@ -109,13 +109,13 @@ public class TicTacToe
                 }
                 catch (InvalidPositionException e)
                 {
-                    this.output.markHasNotBeenPlacedDueToAnException();
+                    this.display.markHasNotBeenPlacedDueToAnException();
                     continue;
                 }
                 break;
             }
         }
-        this.output.displayScore(this.playersScores);
+        this.display.displayScore(this.playersScores);
         
     }
 
