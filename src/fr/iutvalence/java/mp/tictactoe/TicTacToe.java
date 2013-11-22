@@ -34,17 +34,17 @@ public class TicTacToe
      */
     public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
     
-    // TODO comply with naming conventions
+    // TODO (FIXED) comply with naming conventions
     /**
      * The player's choice at a certain moment
      */
-    private Player INPUT;
+    private Player input;
 
-    // TODO comply with naming conventions
+    // TODO (FIXED) comply with naming conventions
     /**
      * Represents what that the players can see on the screen
      */
-    private Display OUTPUT;
+    private Display output;
 
     /**
      * The grid in which the game takes place
@@ -67,14 +67,14 @@ public class TicTacToe
     public TicTacToe(Player player,Display display)
     {
         this.grid = new Grid();
-        this.OUTPUT = display;
-        this.INPUT = player;
+        this.output = display;
+        this.input = player;
         initPlayersScores();
     }
 
-    // TODO (fix) write comment
+    // TODO (FIXED) write comment
     /**
-     * 
+     * Creates a score table and initializes every player's score at zero
      */
     private void initPlayersScores()
     {
@@ -87,7 +87,7 @@ public class TicTacToe
     }
 
     /**
-     * play Handles the whole game from beginning to end, according to the
+     * Handles the whole game from beginning to end, according to the
      * rules. Makes the players play one after another.
      */
     public void play()
@@ -98,9 +98,9 @@ public class TicTacToe
 
             while (true)
             {
-                Position position = this.INPUT.getChoice();
+                Position position = this.input.getChoice();
 
-                this.OUTPUT.displayMarking(playerInfo,position,turn);
+                this.output.displayMarking(playerInfo,position,turn);
 
                 try
                 {
@@ -108,13 +108,13 @@ public class TicTacToe
                 }
                 catch (InvalidPositionException e)
                 {
-                    this.OUTPUT.markHasNotBeenPlacedDueToAnException();
+                    this.output.markHasNotBeenPlacedDueToAnException();
                     continue;
                 }
                 break;
             }
         }
-        this.OUTPUT.displayScore(this.playersScores);
+        this.output.displayScore(this.playersScores);
         
     }
 
