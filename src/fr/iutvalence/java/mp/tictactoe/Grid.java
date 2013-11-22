@@ -7,6 +7,7 @@ package fr.iutvalence.java.mp.tictactoe;
  */
 public class Grid
 {
+    
     /**
      * Default grid size (grid is supposed to have the same height and width)
      */
