@@ -16,9 +16,9 @@ public class Grid
     /**
      * grid[line][column] Game's grid
      */
+    // TODO (fix) this field should be private
     public final Square[][] grid;
 
-    // TODO (FIXED) detail comment (how is the grid?)
     /**
      * Generates an empty grid of DEFAULT_GRID_SIZE columns and DEFAULT_GRID_SIZE lines
      */

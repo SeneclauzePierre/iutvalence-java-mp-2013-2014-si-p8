@@ -33,14 +33,12 @@ public class TicTacToe
      * The default number of players
      */
     public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
-    
-    // TODO (FIXED) comply with naming conventions
+        
     /**
      * The player's choice at a certain moment
      */
     private Player player;
 
-    // TODO (FIXED) comply with naming conventions
     /**
      * Represents what that the players can see on the screen
      */
@@ -89,7 +87,6 @@ public class TicTacToe
         initPlayersScores();
     }
 
-    // TODO (FIXED) write comment
     /**
      * Creates a score table and initializes every player's score at zero
      */

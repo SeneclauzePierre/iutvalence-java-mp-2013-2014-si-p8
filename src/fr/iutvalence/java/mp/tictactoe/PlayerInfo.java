@@ -4,7 +4,6 @@ package fr.iutvalence.java.mp.tictactoe;
  * This class identifies both of the game's players
  *
  */
-// TODO (FIXED) try rewriting this as an enum (with fields)
 public enum PlayerInfo
 {
     /**
