@@ -7,7 +7,12 @@ package fr.iutvalence.java.mp.tictactoe;
  */
 public class ConsoleDisplay implements Display
 {
-    // TODO (fix) Abstract Display (interface)
+    @Override
+    public void initDisplay()
+    {
+        System.out.println("Le jeu commence ! Entrez deux chiffres !");
+        
+    }
     
     /* (non-Javadoc)
      * @see fr.iutvalence.java.mp.tictactoe.Output#displayConsole(fr.iutvalence.java.mp.tictactoe.PlayerInfo, fr.iutvalence.java.mp.tictactoe.Position, int)
@@ -76,4 +81,6 @@ public class ConsoleDisplay implements Display
             System.out.println("");
         }
     }
+
+    
 }

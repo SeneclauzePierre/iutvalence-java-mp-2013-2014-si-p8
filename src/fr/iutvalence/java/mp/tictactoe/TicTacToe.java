@@ -106,6 +106,7 @@ public class TicTacToe
      */
     public void play()
     {
+        this.display.initDisplay();
         for (int turn = 1; turn <= DEFAULT_NUMBER_OF_TURNS; turn++)
         {
             PlayerInfo playerInfo = PlayerInfo.getPlayerInfoForGivenTurn(turn);

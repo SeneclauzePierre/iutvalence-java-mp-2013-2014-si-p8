@@ -7,6 +7,11 @@ public interface Display
 {
 
     /**
+     * Initialise the display
+     */
+    public void initDisplay();
+    
+    /**
      * Displays who just played, where he played, and on which turn he played
      * @param player the player who just played
      * @param position the position where the player played
