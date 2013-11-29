@@ -38,5 +38,42 @@ public class ConsoleDisplay implements Display
             System.out.println("Score Joueur " + (player+1) + " : " + playersScores[player]);
     }
     
-    
+    public void displayGrid(Grid grid)
+    {
+        for(int i=0;i<Grid.DEFAULT_GRID_SIZE;i++)
+        {
+            for(int j=0;j<Grid.DEFAULT_GRID_SIZE;j++)
+            {
+                try
+                {
+                Square currentSquare = grid.getSquareAt(new Position(i,j));
+                switch (currentSquare.getMark()) {
+                    
+                case PLAYER1 : 
+                    if (currentSquare.isPartOfLine())
+                        System.out.print("X ");
+                    else
+                        System.out.print("x ");
+                    break;
+                             
+                case PLAYER2 : 
+                    if (currentSquare.isPartOfLine())
+                        System.out.print("O ");
+                    else
+                        System.out.print("o ");
+                    break;
+                
+                default : 
+                    System.out.print("  ");
+                    break;
+                
+                }
+                }
+                catch(PositionOutOfBoundsException e){
+                    // ignore this, it can not occur
+                }
+            }
+            System.out.println("");
+        }
+    }
 }

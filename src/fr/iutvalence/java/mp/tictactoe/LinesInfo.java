@@ -43,6 +43,16 @@ public class LinesInfo
     }
     
     /**
+     * Indicates if the square completes a line in any axis
+     * @return A boolean from the IsPartOfLineAxis table
+     */
+    public boolean isPartOfLine()
+    {
+        return this.isPartOfLineByAxis[0] || this.isPartOfLineByAxis[1] 
+            || this.isPartOfLineByAxis[2] || this.isPartOfLineByAxis[3];
+    }
+    
+    /**
      * Set as the square completes a line in the given axis 
      * @param axis the set axis
      */

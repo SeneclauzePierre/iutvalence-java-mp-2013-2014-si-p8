@@ -25,4 +25,9 @@ public interface Display
      */
     public void displayScore(int[] playersScores);
 
+    /**
+     * Displays the game's grid.
+     * @param grid : the game's grid
+     */
+    public void displayGrid(Grid grid);
 }

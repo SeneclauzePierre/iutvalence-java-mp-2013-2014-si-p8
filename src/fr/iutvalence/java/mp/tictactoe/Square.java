@@ -87,4 +87,13 @@ public class Square
     {
         this.linesInfo.setIsPartOfLineByAxis(axis);
     }
+    
+    /**
+     * Checks if a square is used to complete a line in any axis
+     * @return true if the square completes a line, else false
+     */
+    public boolean isPartOfLine()
+    {
+        return this.linesInfo.isPartOfLine();
+    }
 }

@@ -127,6 +127,7 @@ public class TicTacToe
                 }
                 break;
             }
+            this.display.displayGrid(this.grid);
         }
         this.display.displayScore(this.playersScores);
         
