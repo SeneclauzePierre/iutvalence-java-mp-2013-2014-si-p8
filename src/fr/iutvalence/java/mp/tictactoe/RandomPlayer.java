@@ -2,7 +2,6 @@ package fr.iutvalence.java.mp.tictactoe;
 
 /**
  * This class represents the actions of the game's players
- *
  */
 public class RandomPlayer implements Player
 {

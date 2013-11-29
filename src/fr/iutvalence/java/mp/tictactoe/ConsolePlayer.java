@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * This class represents the actions of the game's players
+ */
 public class ConsolePlayer implements Player
 {
 
