@@ -16,7 +16,6 @@ public class Grid
     /**
      * grid[line][column] Game's grid
      */
-    // TODO (FIXED) this field should be private
     private final Square[][] grid;
 
     /**
