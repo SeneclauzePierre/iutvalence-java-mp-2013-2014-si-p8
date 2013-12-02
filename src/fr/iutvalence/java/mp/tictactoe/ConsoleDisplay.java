@@ -18,7 +18,7 @@ public class ConsoleDisplay implements Display
      * @see fr.iutvalence.java.mp.tictactoe.Output#displayConsole(fr.iutvalence.java.mp.tictactoe.PlayerInfo, fr.iutvalence.java.mp.tictactoe.Position, int)
      */
     @Override
-    public void displayConsole(PlayerInfo player,Position position ,int turn)
+    public void displayPlay(PlayerInfo player,Position position ,int turn)
     {
         System.out.println("Joueur " + player.getNumber() + " pose sa marque en " + position + " -- Tour : "
                 + turn);

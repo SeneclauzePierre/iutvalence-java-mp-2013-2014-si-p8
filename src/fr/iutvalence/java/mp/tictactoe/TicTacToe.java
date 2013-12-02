@@ -115,7 +115,7 @@ public class TicTacToe
             {
                 Position position = this.player.getChoice();
 
-                this.display.displayConsole(playerInfo,position,turn);
+                this.display.displayPlay(playerInfo,position,turn);
 
                 try
                 {

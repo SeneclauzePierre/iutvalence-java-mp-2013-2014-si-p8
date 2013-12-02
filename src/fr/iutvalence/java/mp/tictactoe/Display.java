@@ -17,7 +17,7 @@ public interface Display
      * @param position the position where the player played
      * @param turn the current turn
      */
-    public void displayConsole(PlayerInfo player, Position position, int turn);
+    public void displayPlay(PlayerInfo player, Position position, int turn);
 
     /**
      * Informs the user that the mark couldn't be placed, because an exception was raised
