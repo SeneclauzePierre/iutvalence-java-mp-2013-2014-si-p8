@@ -16,13 +16,16 @@ public class FrameDisplay implements Display
      */
     JFrame frame = new JFrame("TicTacToe : Le monde est plus beau !");
 
+    /**
+     * A panel of buttons
+     */
     ButtonGridPanel panel = new ButtonGridPanel(Grid.DEFAULT_GRID_SIZE);
 
     public void initDisplay()
     {
         JLabel emptyLabel = new JLabel();
         emptyLabel.setOpaque(true);
-        emptyLabel.setPreferredSize(new Dimension(200, 180));
+        emptyLabel.setPreferredSize(new Dimension(300, 300));
         emptyLabel.setBackground(new Color(255, 245, 200));
         this.frame.getContentPane().add(emptyLabel, BorderLayout.CENTER);
         this.frame.getContentPane().add(this.panel);
@@ -51,7 +54,15 @@ public class FrameDisplay implements Display
         {
             for (int column = 0; column < Grid.DEFAULT_GRID_SIZE; column++)
             {
-                this.panel.updateButton(new Position (column,line));
+                Position pos = new Position (column,line);
+                try
+                {
+                    this.panel.updateButton(pos,grid.getSquareAt(pos));
+                }
+                catch (PositionOutOfBoundsException e)
+                {
+                    //ignored
+                }
             }
         }
     }
