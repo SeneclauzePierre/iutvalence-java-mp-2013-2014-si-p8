@@ -13,7 +13,17 @@ public class RandomPlayer implements Player
     {
         int column = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
         int line = (int) (Grid.DEFAULT_GRID_SIZE * Math.random());
+        try
+        {
+            Thread.sleep(250);
+        }
+        catch (InterruptedException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return new Position(column, line);
+
     }
     
     
