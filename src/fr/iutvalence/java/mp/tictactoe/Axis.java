@@ -5,7 +5,7 @@ package fr.iutvalence.java.mp.tictactoe;
  * 
  */
 public enum Axis
-{
+{ 
     /**
      * represents the up-down axis
      */
